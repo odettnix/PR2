@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание профилья</title>
+</head>
+<body>
+<form>
+  <div style="display: flex; flex-direction: column; width: 200px">
+    <input type="text" name="nick" placeholder="Придумайте никнейм">
+    <input type="text" name="surname" placeholder="Фамилия">
+    <input type="text" name="name" placeholder="Имя">
+    <input type="text" name="patron" placeholder="Отчество">
+    <textarea name="about_me" placeholder="Напишите что-нибудь о себе"></textarea>
+    <input type="number" name="age" placeholder="Возраст">
+    <br>
+    <button formmethod="post" formaction="/blog/profile" type="submit">Создать профиль</button>
+  </div>
+
+  <div th:each="el : ${profiles}">
+    <div style="display: flex; flex-direction: row">
+      <label for="nick" style="margin-right: 10px">Никнейм:</label>
+      <p id='nick' th:text="${el.nick}" style="margin: 0px; font-weight: bold"></p>
+    </div>
+    <div style="display: flex; flex-direction: row">
+      <label for="name" style="margin-right: 10px" >Имя:</label>
+      <p id='name' th:text="${el.name}" style="margin: 0px"></p>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <label for="surname" style="margin-right: 10px">Фамилия:</label>
+      <p id='surname' th:text="${el.surname}" style="margin: 0px"></p>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <label for="ab" style="margin-right: 10px" >Отчество:</label>
+      <p id='ab' th:text="${el.about_me}" style="margin: 0px"></p>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <label for="age" style="margin-right: 10px" >Возраст:</label>
+      <p id='age' th:text="${el.age}" style="margin: 0px"></p>
+    </div>
+
+    <p>===================</p>
+  </div>
+
+</form>
+
+</body>
+</html>

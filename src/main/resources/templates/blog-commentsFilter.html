@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+  <div style="display: flex; flex-direction: column; width: 200px">
+    <input type="text" name="author" placeholder="Автор отзыва">
+    <input type="text" name="heading" style="border: none; pointer-events:none">
+    <button formaction="/blog/filter/comment" formmethod="post" type="submit">Неточный поиск</button>
+    <button formaction="/blog/filter/comments" formmethod="post"  type="submit">Точный поиск</button>
+  </div>
+
+
+
+  <div th:each="el : ${results}">
+
+    <div style="display: flex; flex-direction: row">
+      <label for="author" style="margin-right: 10px; font-weight: bold">Автор:</label>
+      <p id='author' th:text="${el.author}" style="margin: 0px"></p>
+    </div>
+    <div style="display: flex; flex-direction: row">
+      <label for="heading" style="margin-right: 10px">Заголовок:</label>
+      <p id='heading' th:text="${el.heading}" style="margin: 0px"></p>
+    </div>
+    <div style="display: flex; flex-direction: row">
+      <label for="text_otz" style="margin-right: 10px" >Текст отзыва:</label>
+      <p id='text_otz' th:text="${el.text_otz}" style="margin: 0px"></p>
+    </div>
+
+
+
+    <div style="display: flex; flex-direction: row">
+      <label for="date_otz" style="margin-right: 10px" >Дата написания отзыва:</label>
+      <p id='date_otz' th:text="${el.date_otz}" style="margin: 0px"></p>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <label for="mark" style="margin-right: 10px" >Оценка отзыва:</label>
+      <p id='mark' th:text="${el.mark}" style="margin: 0px"></p>
+    </div>
+
+    <p>===================</p>
+  </div>
+</form>
+</body>
+</html>

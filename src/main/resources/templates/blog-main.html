@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Все статьи</h1>
+<a href="/blog/add">Добавить статью</a>
+<a href="/blog/profile">Добавить профиль</a>
+<a href="/blog/comments">Добавить отзыв</a>
+<a href="/blog/filter">Поиск статей</a>
+<a href="/blog/filerProfile">Поиск профилей</a>
+<a href="/blog/filerComments">Поиск отзывов</a>
+<div th:each="el : ${posts}">
+    <div style="display: flex; flex-direction: row">
+        <label for="title" style="margin-right: 10px">Название статьи:</label>
+        <h3 id="title" th:text="${el.title}" style="margin: 0px"></h3>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+        <label for="anons" style="margin-right: 10px">Анонс:</label>
+        <p id="anons" th:text="${el.anons}" style="margin: 0px"></p>
+    </div>
+
+    <p>===============</p>
+
+</div>
+</body>
+</html>
