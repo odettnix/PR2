@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="${'/blog/commentsAdd'}" method="post">
+  <input type="text" name="heading" placeholder="Заголовок">
+  <input type="text" name="text_otz" placeholder="Текст отзыва">
+  <input type="text" name="author" placeholder="Автор отзыва">
+  <input type="datetime-local" name="date_otz" placeholder="Дата">
+  <label>Оценка:</label>
+  <label for="one">1</label>
+  <input type="radio" id="one" name="mark" value="1">
+  <label for="two">2</label>
+  <input type="radio" id="two" name="mark" value="2">
+  <label for="three">3</label>
+  <input type="radio" id="three" name="mark" value="3">
+  <label for="four">4</label>
+  <input type="radio" id="four" name="mark" value="4">
+  <label for="five">5</label>
+  <input type="radio" id="five" name="mark" value="5">
+  <button type="submit">Добавить отзыв</button>
+</form>
+</body>
+</html>

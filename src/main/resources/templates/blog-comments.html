@@ -8,56 +8,142 @@
             margin: 0 auto;
             padding-top: 28px;
         }
+        h1,h2,h3{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+
+        .header{
+            max-width: 1220px;
+            max-height: 80px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-content: center;
+            margin: 0 auto 32px;
+        }
+        .comments{
+            display: flex;
+            flex-direction: column;
+            padding-left: 16px;
+            padding-top: 9px;
+            border-left: black 1px solid;
+            position: relative;
+        }
+        .header__comments{
+            display: flex;
+            flex-direction: row;
+            height: 80px;
+        }
+        .header__title{
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 38px;
+            margin-right: 26px;
+            margin-top: 14px;
+        }
+        .links{
+            text-decoration: none;
+            color: black;
+            transition: opacity .5s linear;
+        }
+        .links:hover{
+            opacity: .5;
+            text-decoration: underline;
+        }
+        .main-link{
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .other-link{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+        }
+        .other-link:first-child{
+            margin-right: 26px;
+        }
+        .content_box{
+            width: 829px;
+            height: 184px;
+            margin: 0 auto 16px;
+            background: #D6D6D6;
+            border-radius: 20px;
+            padding: 24px 34px 0;
+
+
+        }
+        .label__text{
+            margin-right: 10px;
+        }
+        .text_box{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            margin-top: 10px;
+        }
+        .box-flex{
+            display: flex;
+            flex-direction: row;
+        }
+
+
+        .link-more{
+            margin-left: 730px;
+        }
     </style>
 </head>
 <body>
 <div class="page">
-    <a href="/blog/filerComments">Поиск отзывов</a>
-    <form>
-        <input type="text" name="heading" placeholder="Заголовок">
-        <input type="text" name="text_otz" placeholder="Текст отзыва">
-        <input type="text" name="author" placeholder="Автор отзыва">
-        <input type="datetime-local" name="date_otz" placeholder="Дата">
-        <label>Оценка:</label>
-        <label for="one">1</label>
-        <input type="radio" id="one" name="mark" value="1">
-        <label for="two">2</label>
-        <input type="radio" id="two" name="mark" value="2">
-        <label for="three">3</label>
-        <input type="radio" id="three" name="mark" value="3">
-        <label for="four">4</label>
-        <input type="radio" id="four" name="mark" value="4">
-        <label for="five">5</label>
-        <input type="radio" id="five" name="mark" value="5">
-        <button formmethod="post" formaction="/blog/comments" type="submit">Создать отзыв</button>
-
-
-        <div th:each="el : ${comments}">
-            <div style="display: flex; flex-direction: row">
-                <label for="heading" style="margin-right: 10px">Заголовок:</label>
-                <p id='heading' th:text="${el.heading}" style="margin: 0px; font-weight: bold"></p>
+    <header class="header">
+        <div class="header__comments">
+            <h1 class="header__title">ОТЗЫВЫ</h1>
+            <div class="comments">
+                <a class="links main-link" href="/blog/commentsAdd">Добавить отзыв</a>
+                <a class="links" href="/blog/filerComments">Поиск отзывов</a>
             </div>
-            <div style="display: flex; flex-direction: row">
-                <label for="text_otz" style="margin-right: 10px" >Текст отзыва:</label>
-                <p id='text_otz' th:text="${el.text_otz}" style="margin: 0px"></p>
+        </div>
+        <div class="header__nav-links">
+            <a class="links other-link" href="/">Статьи</a>
+            <a class="links other-link" href="/blog/profile">Профили</a>
+        </div>
+    </header>
+
+    <form >
+        <div class="content_box" th:each="el : ${comments}">
+            <div class="box-flex">
+                <label class="text_box label__text" for="heading" style="margin-right: 10px">Заголовок:</label>
+                <p id='heading' th:text="${el.heading}" class="text_box"></p>
+            </div>
+            <div class="box-flex">
+                <label class="text_box label__text" for="text_otz" style="margin-right: 10px" >Текст отзыва:</label>
+                <p id='text_otz' th:text="${el.text_otz}" class="text_box"></p>
             </div>
 
-            <div style="display: flex; flex-direction: row">
-                <label for="author" style="margin-right: 10px">Автор:</label>
-                <p id='author' th:text="${el.author}" style="margin: 0px"></p>
+            <div class="box-flex">
+                <label class="text_box label__text" for="author" style="margin-right: 10px">Автор:</label>
+                <p id='author' th:text="${el.author}" class="text_box"></p>
             </div>
 
-            <div style="display: flex; flex-direction: row">
-                <label for="date_otz" style="margin-right: 10px" >Дата написания отзыва:</label>
-                <p id='date_otz' th:text="${el.date_otz}" style="margin: 0px"></p>
+            <div class="box-flex">
+                <label class="text_box label__text" for="date_otz" style="margin-right: 10px" >Дата написания отзыва:</label>
+                <p id='date_otz' th:text="${el.date_otz}" class="text_box"></p>
             </div>
 
-            <div style="display: flex; flex-direction: row">
-                <label for="mark" style="margin-right: 10px" >Оценка отзыва:</label>
-                <p id='mark' th:text="${el.mark}" style="margin: 0px"></p>
+            <div class="box-flex box-margin">
+                <label class="text_box label__text" for="mark" style="margin-right: 10px" >Оценка отзыва:</label>
+                <p id='mark' th:text="${el.mark}" class="text_box"></p>
             </div>
-            <a th:href="'/blog/Comments/' + ${el.id}">Подробнее</a>
-            <p>===================</p>
+            <a class="links link-more" th:href="'/blog/Comments/' + ${el.id}">Подробнее &rarr;</a>
         </div>
     </form>
 </div>

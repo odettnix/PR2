@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="${'/blog/ProfileAdd'}" method="post">
+    <div style="display: flex; flex-direction: column; width: 200px">
+        <input type="text" name="nick" placeholder="Придумайте никнейм">
+        <input type="text" name="surname" placeholder="Фамилия">
+        <input type="text" name="name" placeholder="Имя">
+        <input type="text" name="patron" placeholder="Отчество">
+        <textarea name="about_me" placeholder="Напишите что-нибудь о себе"></textarea>
+        <input type="number" name="age" placeholder="Возраст">
+        <br>
+        <button type="submit">Добавить профиль</button>
+    </div>
+</form>
+
+
+</body>
+</html>

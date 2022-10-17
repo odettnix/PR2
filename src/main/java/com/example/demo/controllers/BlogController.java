@@ -92,7 +92,14 @@ public class BlogController  {
         return "blog-profile";
     }
 
-    @PostMapping("/blog/profile")
+    @GetMapping("/blog/ProfileAdd")
+    public String blogProfileAdd(Model model)
+    {
+
+        return "blog-profileAdd";
+    }
+
+    @PostMapping("/blog/ProfileAdd")
     public String blogProfileAdd(@RequestParam String nick,
                                  @RequestParam String surname,
                                  @RequestParam String name,
@@ -117,7 +124,14 @@ public class BlogController  {
         return "blog-comments";
     }
 
-    @PostMapping("/blog/comments")
+    @GetMapping("/blog/commentsAdd")
+    public String blogCommentsAdd(Model model)
+    {
+
+        return "blog-commentsAdd";
+    }
+
+    @PostMapping("/blog/commentsAdd")
     public String blogCommentsAdd(@RequestParam String heading,
                                  @RequestParam String text_otz,
                                  @RequestParam String author,

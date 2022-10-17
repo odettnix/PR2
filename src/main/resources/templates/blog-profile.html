@@ -3,57 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <title>Создание профилья</title>
+  <style>
+    .page{
+      margin: 0 auto;
+      padding-top: 28px;
+    }
+    h1,h2,h3{
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    p{
+      margin: 0;
+      padding: 0;
+    }
+
+    .header{
+      max-width: 1220px;
+      max-height: 80px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-content: center;
+      margin: 0 auto 32px;
+    }
+    .profiles{
+      display: flex;
+      flex-direction: column;
+      padding-left: 16px;
+      padding-top: 9px;
+      border-left: black 1px solid;
+      position: relative;
+    }
+    .header__profile{
+      display: flex;
+      flex-direction: row;
+      height: 80px;
+    }
+    .header__title{
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 38px;
+      margin-right: 26px;
+      margin-top: 14px;
+    }
+    .links{
+      text-decoration: none;
+      color: black;
+      transition: opacity .5s linear;
+    }
+    .links:hover{
+      opacity: .5;
+      text-decoration: underline;
+    }
+    .main-link{
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
+    }
+    .other-link{
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+    }
+    .other-link:first-child{
+      margin-right: 26px;
+    }
+    .content_box{
+      width: 405px;
+      height: 300px;
+      margin-bottom: 16px;
+      background: #D6D6D6;
+      border-radius: 20px;
+      padding: 28px 36px 0;
+    }
+    .content{
+      margin: 0 auto;
+      width: 995px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-content: center;
+    }
+    .box-flex{
+      display: flex;
+      flex-direction: row;
+    }
+    .label__text{
+      margin-right: 10px;
+    }
+    .text_box{
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      margin-top: 10px;
+    }
+    .link-more{
+      margin-left: 300px;
+    }
+    .box-margin{
+      margin-bottom: 70px;
+    }
+  </style>
 </head>
+
 <body>
-<a href="/blog/filerProfile">Поиск профилей</a>
-<form>
 
-  <div style="display: flex; flex-direction: column; width: 200px">
-    <input type="text" name="nick" placeholder="Придумайте никнейм">
-    <input type="text" name="surname" placeholder="Фамилия">
-    <input type="text" name="name" placeholder="Имя">
-    <input type="text" name="patron" placeholder="Отчество">
-    <textarea name="about_me" placeholder="Напишите что-нибудь о себе"></textarea>
-    <input type="number" name="age" placeholder="Возраст">
-    <br>
-    <button formmethod="post" formaction="/blog/profile" type="submit">Создать профиль</button>
+<div class="page">
+  <header class="header">
+    <div class="header__profile">
+      <h1 class="header__title">ПРОФИЛЬ</h1>
+      <div class="profiles">
+        <a class="links main-link" href="/blog/ProfileAdd">Добавить профиль</a>
+        <a class="links" href="/blog/filerProfile">Поиск профилей</a>
+
+      </div>
+    </div>
+    <div class="header__nav-links">
+      <a class="links other-link" href="/">Статьи</a>
+      <a class="links other-link" href="/blog/comments">Отзывы</a>
+    </div>
+  </header>
+
+
+<form class="content">
+  <div  th:each="el : ${profiles}">
+    <div class="content_box">
+      <div class="box-flex">
+        <label for="nick" class="text_box label__text">Никнейм:</label>
+        <p id='nick' th:text="${el.nick}" class="text_box"></p>
+      </div>
+      <div class="box-flex">
+        <label for="name" class="text_box label__text" >Имя:</label>
+        <p id='name'  th:text="${el.name}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex">
+        <label for="surname" class="text_box label__text">Фамилия:</label>
+        <p id='surname' th:text="${el.surname}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex">
+        <label for="patron" class="text_box label__text">Отчетство:</label>
+        <p id='patron' th:text="${el.patron}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex ">
+        <label for="age" class="text_box label__text">Возраст:</label>
+        <p id='age' th:text="${el.age}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex box-margin">
+        <label for="ab" class="text_box label__text" >Про себя:</label>
+        <p id='ab' th:text="${el.about_me}" class="text_box"></p>
+      </div>
+
+
+      <a class="links link-more" th:href="'/blog/Profile/' + ${el.id}">Подробнее &rarr;</a>
+    </div>
+
   </div>
-
-  <div th:each="el : ${profiles}">
-    <div style="display: flex; flex-direction: row">
-      <label for="nick" style="margin-right: 10px">Никнейм:</label>
-      <p id='nick' th:text="${el.nick}" style="margin: 0px; font-weight: bold"></p>
-    </div>
-    <div style="display: flex; flex-direction: row">
-      <label for="name" style="margin-right: 10px" >Имя:</label>
-      <p id='name' th:text="${el.name}" style="margin: 0px"></p>
-    </div>
-
-    <div style="display: flex; flex-direction: row">
-      <label for="surname" style="margin-right: 10px">Фамилия:</label>
-      <p id='surname' th:text="${el.surname}" style="margin: 0px"></p>
-    </div>
-
-    <div style="display: flex; flex-direction: row">
-      <label for="patron" style="margin-right: 10px">Отчетство:</label>
-      <p id='patron' th:text="${el.patron}" style="margin: 0px"></p>
-    </div>
-
-    <div style="display: flex; flex-direction: row">
-      <label for="ab" style="margin-right: 10px" >Про себя:</label>
-      <p id='ab' th:text="${el.about_me}" style="margin: 0px"></p>
-    </div>
-
-    <div style="display: flex; flex-direction: row">
-      <label for="age" style="margin-right: 10px" >Возраст:</label>
-      <p id='age' th:text="${el.age}" style="margin: 0px"></p>
-    </div>
-    <a th:href="'/blog/Profile/' + ${el.id}">Подробнее</a>
-
-    <p>===================</p>
-  </div>
-
 </form>
-
+</div>
 </body>
 </html>
