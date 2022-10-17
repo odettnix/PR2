@@ -12,6 +12,7 @@
 <a href="/blog/filter">Поиск статей</a>
 <a href="/blog/filerProfile">Поиск профилей</a>
 <a href="/blog/filerComments">Поиск отзывов</a>
+
 <div th:each="el : ${posts}">
     <div style="display: flex; flex-direction: row">
         <label for="title" style="margin-right: 10px">Название статьи:</label>
@@ -22,6 +23,8 @@
         <label for="anons" style="margin-right: 10px">Анонс:</label>
         <p id="anons" th:text="${el.anons}" style="margin: 0px"></p>
     </div>
+
+    <a th:href="'/blog/' + ${el.id}">Подробнее</a>
 
     <p>===============</p>
 

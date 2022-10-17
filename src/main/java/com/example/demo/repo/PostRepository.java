@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
 
-    List<Post> findByTitleAndAnonsContains(String title, String anons);
+    List<Post> findByTitle(String title);
     List<Post> findByTitleContains(String title);
 
 }

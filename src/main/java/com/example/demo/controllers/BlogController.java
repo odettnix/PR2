@@ -14,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class BlogController  {
@@ -67,9 +69,9 @@ public class BlogController  {
     }
 
     @PostMapping("/blog/filter/results")
-    public String blogResults(@RequestParam String title, @RequestParam String anons, Model model)
+    public String blogResults(@RequestParam String title, Model model)
     {
-        List<Post> results = postRepository.findByTitleAndAnonsContains(title, anons);
+        List<Post> results = postRepository.findByTitle(title);
         model.addAttribute("results", results);
 //        List<Post> result = postRepository.findByTitleContains(title);
 //        model.addAttribute("result", result);
@@ -153,9 +155,9 @@ public class BlogController  {
     }
 
     @PostMapping("/blog/filter/profiles")
-    public String blogResultsProfiles(@RequestParam String nick, @RequestParam String surname, Model model)
+    public String blogResultsProfiles(@RequestParam String nick, Model model)
     {
-        List<Profile> results = profileRepository.findByNickAndSurnameContains(nick, surname);
+        List<Profile> results = profileRepository.findByNick(nick);
         model.addAttribute("results", results);
 //        List<Post> result = postRepository.findByTitleContains(title);
 //        model.addAttribute("result", result);
@@ -181,11 +183,62 @@ public class BlogController  {
     @PostMapping("/blog/filter/comments")
     public String blogResultsComments(@RequestParam String author, @RequestParam String heading, Model model)
     {
-        List<Commentari> results = commentariRepository.findByAuthorAndHeadingContains(author, heading);
+        List<Commentari> results = commentariRepository.findByAuthor(author);
         model.addAttribute("results", results);
 //        List<Post> result = postRepository.findByTitleContains(title);
 //        model.addAttribute("result", result);
         return "blog-commentsFilter";
+    }
+
+    @GetMapping("/blog/{id}")
+    public String blogDetails(@PathVariable(value = "id") long id, Model model)
+    {
+        Optional<Post> post = postRepository.findById(id);
+        ArrayList<Post> res = new ArrayList<>();
+        post.ifPresent(res::add);
+        model.addAttribute("post", res);
+        if(!postRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        return "blog-details";
+    }
+
+    @GetMapping("/blog/{id}/edit")
+    public String blogEdit(@PathVariable(value = "id") long id, Model model)
+    {
+        if(!postRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        Optional<Post> post = postRepository.findById(id);
+        ArrayList<Post> res = new ArrayList<>();
+        post.ifPresent(res::add);
+        model.addAttribute("post", res);
+
+        return "blog-edit";
+    }
+
+    @PostMapping("/blog/{id}/edit")
+    public String blogPostUpdate(@PathVariable(value = "id") long id,
+                                 @RequestParam String title,
+                                 @RequestParam String anons,
+                                 @RequestParam String full_text,
+                                 Model model)
+    {
+        Post post = postRepository.findById(id).orElseThrow();
+        post.setTitle(title);
+        post.setAnons(anons);
+        post.setFull_text(full_text);
+        postRepository.save(post);
+        return "redirect:/";
+    }
+
+    @PostMapping("/blog/{id}/remove")
+    public String blogBlogDelete(@PathVariable(value = "id") long id,
+                                 Model model)
+    {
+        Post post = postRepository.findById(id).orElseThrow();
+        postRepository.delete(post);
+        return "redirect:/";
     }
 
 
