@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div th:each="el : ${profile}" style="display: flex; flex-direction: column; width: 200px">
+  <form method="post">
+    <input type="text" th:value="${el.nick}" name="nick" placeholder="Придумайте никнейм">
+    <input type="text" th:value="${el.surname}" name="surname" placeholder="Фамилия">
+    <input type="text" th:value="${el.name}" name="name" placeholder="Имя">
+    <input type="text" th:value="${el.patron}" name="patron" placeholder="Отчество">
+    <textarea th:value="${el.about_me}" name="about_me" placeholder="Напишите что-нибудь о себе"></textarea>
+    <input type="number" th:value="${el.age}" name="age" placeholder="Возраст">
+    <br>
+    <button type="submit">Сохранить изменения</button>
+  </form>
+</div>
+</body>
+</html>

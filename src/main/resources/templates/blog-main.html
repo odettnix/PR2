@@ -3,31 +3,161 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .page{
+            margin: 0 auto;
+            padding-top: 28px;
+        }
+        h1,h2,h3{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+
+        .header{
+            max-width: 1220px;
+            max-height: 80px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-content: center;
+            margin: 0 auto 32px;
+        }
+        .posts{
+            display: flex;
+            flex-direction: column;
+            padding-left: 16px;
+            padding-top: 9px;
+            border-left: black 1px solid;
+            position: relative;
+        }
+
+        .header__post{
+            display: flex;
+            flex-direction: row;
+            height: 80px;
+        }
+        .header__title{
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 38px;
+            margin-right: 26px;
+            margin-top: 14px;
+        }
+        .links{
+            text-decoration: none;
+            color: black;
+            transition: opacity .5s linear;
+        }
+        .links:hover{
+            opacity: .5;
+            text-decoration: underline;
+        }
+        .main-link{
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .other-link{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+        }
+        .other-link:first-child{
+            margin-right: 26px;
+        }
+        .content_box{
+            width: 829px;
+            height: 184px;
+            margin: 0 auto 16px;
+            background: #D6D6D6;
+            border-radius: 20px;
+            padding: 24px 34px 0;
+
+
+        }
+        .label__text{
+            margin-right: 10px;
+        }
+        .text_box{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            margin-top: 10px;
+        }
+        .box-flex{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .box-margin{
+            margin-bottom: 60px;
+        }
+        .link-more{
+            margin-left: 720px;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Все статьи</h1>
-<a href="/blog/add">Добавить статью</a>
-<a href="/blog/profile">Добавить профиль</a>
-<a href="/blog/comments">Добавить отзыв</a>
-<a href="/blog/filter">Поиск статей</a>
-<a href="/blog/filerProfile">Поиск профилей</a>
-<a href="/blog/filerComments">Поиск отзывов</a>
+<div class="page">
+    <header class="header">
+        <div class="header__post">
+            <h1 class="header__title">СТАТЬИ</h1>
+            <div class="posts">
+                <a class="links main-link" href="/blog/add">Добавить статью</a>
+                <a class="links" href="/blog/filter">Поиск статей</a>
+            </div>
 
-<div th:each="el : ${posts}">
-    <div style="display: flex; flex-direction: row">
-        <label for="title" style="margin-right: 10px">Название статьи:</label>
-        <h3 id="title" th:text="${el.title}" style="margin: 0px"></h3>
-    </div>
+        </div>
 
-    <div style="display: flex; flex-direction: row">
-        <label for="anons" style="margin-right: 10px">Анонс:</label>
-        <p id="anons" th:text="${el.anons}" style="margin: 0px"></p>
-    </div>
+        <div class="header__nav-links">
+            <a class="links other-link" href="/blog/profile">Профили</a>
+            <a class="links" href="/blog/comments">Отзывы</a>
+        </div>
 
-    <a th:href="'/blog/' + ${el.id}">Подробнее</a>
 
-    <p>===============</p>
+    </header>
+
+    <main class="content" >
+        <div th:each="el : ${posts}">
+            <div class="content_box">
+                <div class="box-flex">
+                    <label class="text_box label__text" for="title" >Название статьи:</label>
+                    <h3 class="text_box" id="title" th:text="${el.title}" ></h3>
+                </div>
+
+                <div class="box-flex">
+                    <label class="text_box label__text" for="anons" >Анонс:</label>
+                    <p class="text_box" id="anons" th:text="${el.anons}" ></p>
+                </div>
+
+                <div class="box-flex box-margin">
+                    <label class="text_box label__text" for="anons" >Текст статьи:</label>
+                    <p class="text_box" id="full_text" th:text="${el.full_text}" ></p>
+                </div>
+
+                <a class="links link-more" th:href="'/blog/' + ${el.id}">Подробнее &rarr;</a>
+
+
+            </div>
+
+
+        </div>
+    </main>
+
+
+
+
 
 </div>
+
 </body>
 </html>

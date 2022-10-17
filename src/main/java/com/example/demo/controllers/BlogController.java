@@ -241,6 +241,118 @@ public class BlogController  {
         return "redirect:/";
     }
 
+    ///////////////////////////////////
+    @GetMapping("/blog/Profile/{id}")
+    public String blogDetailsProfile(@PathVariable(value = "id") long id, Model model)
+    {
+        Optional<Profile> profiles = profileRepository.findById(id);
+        ArrayList<Profile> res = new ArrayList<>();
+        profiles.ifPresent(res::add);
+        model.addAttribute("profile", res);
+        if(!profileRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        return "blog-detailsProfile";
+    }
+
+    @GetMapping("/blog/Profile/{id}/edit")
+    public String blogEditProfile(@PathVariable(value = "id") long id, Model model)
+    {
+        if(!profileRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        Optional<Profile> post = profileRepository.findById(id);
+        ArrayList<Profile> res = new ArrayList<>();
+        post.ifPresent(res::add);
+        model.addAttribute("profile", res);
+
+        return "blog-editProfile";
+    }
+
+    @PostMapping("/blog/Profile/{id}/edit")
+    public String blogPostUpdateProfile(@PathVariable(value = "id") long id,
+                                        @RequestParam String nick,
+                                        @RequestParam String surname,
+                                        @RequestParam String name,
+                                        @RequestParam String patron,
+                                        @RequestParam String about_me,
+                                        @RequestParam int age,
+                                        Model model)
+    {
+        Profile profile = profileRepository.findById(id).orElseThrow();
+        profile.setNick(nick);
+        profile.setSurname(surname);
+        profile.setName(name);
+        profile.setPatron(patron);
+        profile.setAbout_me(about_me);
+        profile.setAge(age);
+        profileRepository.save(profile);
+        return "redirect:/";
+    }
+
+    @PostMapping("/blog/Profile/{id}/remove")
+    public String blogBlogDeleteProfile(@PathVariable(value = "id") long id,
+                                 Model model)
+    {
+        Profile profile = profileRepository.findById(id).orElseThrow();
+        profileRepository.delete(profile);
+        return "redirect:/";
+    }
+    ////////////////////////////////////////////
+    @GetMapping("/blog/Comments/{id}")
+    public String blogDetailsComments(@PathVariable(value = "id") long id, Model model)
+    {
+        Optional<Commentari> comments = commentariRepository.findById(id);
+        ArrayList<Commentari> res = new ArrayList<>();
+        comments.ifPresent(res::add);
+        model.addAttribute("comments", res);
+        if(!commentariRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        return "blog-detailsComments";
+    }
+
+    @GetMapping("/blog/Comments/{id}/edit")
+    public String blogEditProfileComments(@PathVariable(value = "id") long id, Model model)
+    {
+        if(!commentariRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        Optional<Commentari> commentari = commentariRepository.findById(id);
+        ArrayList<Commentari> res = new ArrayList<>();
+        commentari.ifPresent(res::add);
+        model.addAttribute("comments", res);
+
+        return "blog-editComments";
+    }
+
+    @PostMapping("/blog/Comments/{id}/edit")
+    public String blogPostUpdateComments(@PathVariable(value = "id") long id,
+                                         @RequestParam String heading,
+                                         @RequestParam String text_otz,
+                                         @RequestParam String author,
+                                         @RequestParam String date_otz,
+                                         @RequestParam String mark,
+                                        Model model)
+    {
+        Commentari commentari = commentariRepository.findById(id).orElseThrow();
+        commentari.setHeading(heading);
+        commentari.setText_otz(text_otz);
+        commentari.setAuthor(author);
+        commentari.setDate_otz(date_otz);
+        commentari.setMark(mark);
+        commentariRepository.save(commentari);
+        return "redirect:/";
+    }
+
+    @PostMapping("/blog/Comments/{id}/remove")
+    public String blogBlogDeleteComments(@PathVariable(value = "id") long id,
+                                        Model model)
+    {
+        Commentari commentari = commentariRepository.findById(id).orElseThrow();
+        commentariRepository.delete(commentari);
+        return "redirect:/";
+    }
 
 
 
