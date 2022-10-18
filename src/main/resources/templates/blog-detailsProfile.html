@@ -3,43 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .page{
+            margin: 0 auto;
+            padding-top: 28px;
+        }
+        h1,h2,h3{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            width: 1221px;
+            height: 80px;
+            margin: 0 auto 26px;
+            align-items: center;
+        }
+        .header__title{
+            padding-left: 17px;
+            border-left: 1px black solid;
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 38px;
+            height: 60px;
+            padding-top: 21px;
+        }
+        .content_box{
+            width: 829px;
+            height: 184px;
+            margin: 20px auto 16px;
+            background: #D6D6D6;
+            border-radius: 20px;
+            padding: 24px 34px 0;
+
+
+        }
+        .label__text{
+            margin-right: 10px;
+        }
+        .text_box{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            margin-top: 10px;
+        }
+        .box-flex{
+            display: flex;
+            flex-direction: row;
+        }
+        .links{
+            text-decoration: none;
+            color: black;
+            transition: opacity .5s linear;
+            margin-left: 600px;
+        }
+        .links:hover{
+            opacity: .5;
+            text-decoration: underline;
+        }
+        .button-class{
+            width: 90px;
+            height: 22px;
+            background: #808080;
+            border-radius: 20px;
+            border: none;
+            transition: opacity .5s linear;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 16px;
+            color: #FFFFFF;
+
+        }
+        .button-class:hover {
+            opacity: .8;
+        }
+        .flex-link{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            align-items: center;
+        }
+
+    </style>
 </head>
 <body>
-<div th:each="el : ${profile}">
-    <div style="display: flex; flex-direction: row">
-        <label for="nick" style="margin-right: 10px">Никнейм:</label>
-        <p id='nick' th:text="${el.nick}" style="margin: 0px; font-weight: bold"></p>
-    </div>
-    <div style="display: flex; flex-direction: row">
-        <label for="name" style="margin-right: 10px" >Имя:</label>
-        <p id='name' th:text="${el.name}" style="margin: 0px"></p>
-    </div>
 
-    <div style="display: flex; flex-direction: row">
-        <label for="surname" style="margin-right: 10px">Фамилия:</label>
-        <p id='surname' th:text="${el.surname}" style="margin: 0px"></p>
-    </div>
+<div class="page">
+    <header class="header">
+        <h1 class="header__title">ДЕТАЛИ КОММЕНТАРИЯ</h1>
+    </header>
 
-    <div style="display: flex; flex-direction: row">
-        <label for="patron" style="margin-right: 10px">Отчетство:</label>
-        <p id='patron' th:text="${el.patron}" style="margin: 0px"></p>
-    </div>
+    <div class="content_box" th:each="el : ${profile}">
+        <div class="box-flex">
+            <label for="nick" class="text_box label__text">Никнейм:</label>
+            <p id='nick' th:text="${el.nick}" class="text_box"></p>
+        </div>
+        <div class="box-flex">
+            <label for="name" class="text_box label__text" >Имя:</label>
+            <p id='name' th:text="${el.name}" class="text_box"></p>
+        </div>
 
-    <div style="display: flex; flex-direction: row">
-        <label for="ab" style="margin-right: 10px" >Про себя:</label>
-        <p id='ab' th:text="${el.about_me}" style="margin: 0px"></p>
-    </div>
 
-    <div style="display: flex; flex-direction: row">
-        <label for="age" style="margin-right: 10px" >Возраст:</label>
-        <p id='age' th:text="${el.age}" style="margin: 0px"></p>
-    </div>
+        <div class="box-flex">
+            <label for="data_reg" class="text_box label__text">Дата регистрации:</label>
+            <p id='data_reg' th:text="${el.data_reg}" class="text_box"></p>
+        </div>
 
-    <a th:href="'/blog/Profile/' + ${el.id} + '/edit'">Рекдактировать</a>
+        <div class="box-flex">
+            <label for="gender" class="text_box label__text" >Пол:</label>
+            <p id='gender' th:text="${el.gender}" class="text_box"></p>
+        </div>
 
-    <form th:action="'/blog/Profile/' + ${el.id} + '/remove'" method="post">
-        <button type="submit" class="btn btn-del">Удалить</button>
-    </form>
+        <div class="box-flex">
+            <label for="age" class="text_box label__text" >Возраст:</label>
+            <p id='age' th:text="${el.age}" class="text_box"></p>
+        </div>
+
+        <div class="flex-link">
+            <form th:action="'/blog/Profile/' + ${el.id} + '/remove'" method="post">
+                <button type="submit" class="button-class">Удалить</button>
+            </form>
+            <a class="links link-more" th:href="'/blog/Profile/' + ${el.id} + '/edit'">Рекдактировать</a>
+        </div>
+
+</div>
+
 
 </div>
 </body>

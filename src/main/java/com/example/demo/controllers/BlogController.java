@@ -10,13 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.repo.PostRepository;
 import com.example.demo.models.Post;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Controller
 public class BlogController  {
@@ -35,19 +41,29 @@ public class BlogController  {
     }
 
    @GetMapping("/blog/add")
-    public String blogAdd(Model model)
+    public String blogAdd(Post post, Model model)
     {
         return "blog-add";
     }
 
 
 
+//    @PostMapping("/blog/add")
+//    public String blogPostAdd(@RequestParam String title,
+//                              @RequestParam String anons,
+//                              @RequestParam String full_text, Model model)
+//    {
+//        Post post = new Post(title, anons, full_text);
+//        postRepository.save(post);
+//        return "redirect:/";
+//    }
+
     @PostMapping("/blog/add")
-    public String blogPostAdd(@RequestParam String title,
-                              @RequestParam String anons,
-                              @RequestParam String full_text, Model model)
+    public String blogPostAdd(@ModelAttribute ("post") @Valid Post post, BindingResult bindingResult)
     {
-        Post post = new Post(title, anons, full_text);
+        if(bindingResult.hasErrors()){
+            return "blog-add";
+        }
         postRepository.save(post);
         return "redirect:/";
     }
@@ -101,14 +117,13 @@ public class BlogController  {
 
     @PostMapping("/blog/ProfileAdd")
     public String blogProfileAdd(@RequestParam String nick,
-                                 @RequestParam String surname,
                                  @RequestParam String name,
-                                 @RequestParam String patron,
-                                 @RequestParam String about_me,
+                                 @RequestParam Date data_reg,
+                                 @RequestParam char gender,
                                  @RequestParam int age,
                                  Model model)
     {
-        Profile profile = new Profile(nick, surname, name, patron, about_me, age);
+        Profile profile = new Profile(nick, name, data_reg, gender, age);
         profileRepository.save(profile);
 
         return "redirect:/";
@@ -132,14 +147,14 @@ public class BlogController  {
     }
 
     @PostMapping("/blog/commentsAdd")
-    public String blogCommentsAdd(@RequestParam String heading,
-                                 @RequestParam String text_otz,
-                                 @RequestParam String author,
-                                 @RequestParam String date_otz,
-                                 @RequestParam String mark,
+    public String blogCommentsAdd(@RequestParam char recommend,
+                                  @RequestParam String text_otz,
+                                  @RequestParam String author,
+                                  @RequestParam Date date_otz,
+                                  @RequestParam int mark,
                                  Model model)
     {
-        Commentari commentari = new Commentari(heading, text_otz, author, date_otz, mark);
+        Commentari commentari = new Commentari(text_otz, author, date_otz, mark, recommend);
         commentariRepository.save(commentari);
 //        model.addAttribute("heading", heading);
 //        model.addAttribute("text_otz", text_otz);
@@ -195,7 +210,7 @@ public class BlogController  {
     }
 
     @PostMapping("/blog/filter/comments")
-    public String blogResultsComments(@RequestParam String author, @RequestParam String heading, Model model)
+    public String blogResultsComments(@RequestParam String author, Model model)
     {
         List<Commentari> results = commentariRepository.findByAuthor(author);
         model.addAttribute("results", results);
@@ -286,19 +301,17 @@ public class BlogController  {
     @PostMapping("/blog/Profile/{id}/edit")
     public String blogPostUpdateProfile(@PathVariable(value = "id") long id,
                                         @RequestParam String nick,
-                                        @RequestParam String surname,
                                         @RequestParam String name,
-                                        @RequestParam String patron,
-                                        @RequestParam String about_me,
+                                        @RequestParam Date data_reg,
+                                        @RequestParam char gender,
                                         @RequestParam int age,
                                         Model model)
     {
         Profile profile = profileRepository.findById(id).orElseThrow();
         profile.setNick(nick);
-        profile.setSurname(surname);
         profile.setName(name);
-        profile.setPatron(patron);
-        profile.setAbout_me(about_me);
+        profile.setData_reg(data_reg);
+        profile.setGender(gender);
         profile.setAge(age);
         profileRepository.save(profile);
         return "redirect:/";
@@ -342,15 +355,15 @@ public class BlogController  {
 
     @PostMapping("/blog/Comments/{id}/edit")
     public String blogPostUpdateComments(@PathVariable(value = "id") long id,
-                                         @RequestParam String heading,
+                                         @RequestParam char recommend,
                                          @RequestParam String text_otz,
                                          @RequestParam String author,
-                                         @RequestParam String date_otz,
-                                         @RequestParam String mark,
+                                         @RequestParam Date date_otz,
+                                         @RequestParam int mark,
                                         Model model)
     {
         Commentari commentari = commentariRepository.findById(id).orElseThrow();
-        commentari.setHeading(heading);
+        commentari.setRecommend(recommend);
         commentari.setText_otz(text_otz);
         commentari.setAuthor(author);
         commentari.setDate_otz(date_otz);

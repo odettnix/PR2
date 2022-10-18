@@ -3,32 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+  <style>
+    .page{
+      margin: 0 auto;
+      padding-top: 28px;
+    }
+    h1,h2,h3{
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    p{
+      margin: 0;
+      padding: 0;
+    }
+    .header{
+      width: 1221px;
+      height: 80px;
+      margin: 0 auto 26px;
+      align-items: center;
+    }
+    .header__title{
+      padding-left: 17px;
+      border-left: 1px black solid;
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 38px;
+      height: 60px;
+      padding-top: 21px;
+    }
+    .content_box{
+      width: 829px;
+      height: 184px;
+      margin: 20px auto 16px;
+      background: #D6D6D6;
+      border-radius: 20px;
+      padding: 24px 34px 0;
+
+
+    }
+    .label__text{
+      margin-right: 10px;
+    }
+    .text_box{
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      margin-top: 10px;
+    }
+    .box-flex{
+      display: flex;
+      flex-direction: row;
+    }
+    .links{
+      text-decoration: none;
+      color: black;
+      transition: opacity .5s linear;
+      margin-left: 700px;
+    }
+    .links:hover{
+      opacity: .5;
+      text-decoration: underline;
+    }
+    .button-class{
+      width: 90px;
+      height: 22px;
+      background: #808080;
+      border-radius: 20px;
+      border: none;
+      transition: opacity .5s linear;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-top: 10px;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 16px;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+    .button-class:hover {
+      opacity: .8;
+    }
+
+  </style>
 </head>
 <body>
-<div th:each="el : ${post}">
-  <div style="display: flex; flex-direction: row">
-    <label for="title" style="margin-right: 10px">Название статьи:</label>
-    <h3 id="title" th:text="${el.title}" style="margin: 0px"></h3>
+
+<div class="page">
+  <header class="header">
+    <h1 class="header__title">ДЕТАЛИ СТАТЬИ</h1>
+  </header>
+
+  <div class="content_box" th:each="el : ${post}">
+    <div class="box-flex">
+      <label for="title" class="text_box label__text">Название статьи:</label>
+      <h3 id="title" th:text="${el.title}" class="text_box"></h3>
+    </div>
+
+    <div class="box-flex">
+      <label for="anons" class="text_box label__text">Анонс:</label>
+      <p id="anons" th:text="${el.anons}" class="text_box"></p>
+    </div>
+
+    <div class="box-flex">
+      <label for="full_text" class="text_box label__text">Текст статьи:</label>
+      <p id="full_text" th:text="${el.full_text}" class="text_box"></p>
+    </div>
+
+
+
+    <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
+      <button type="submit" class="button-class">Удалить</button>
+    </form>
+
+    <a class="links link-more" th:href="'/blog/' + ${el.id} + '/edit'">Редактировать &rarr;</a>
+
   </div>
-
-  <div style="display: flex; flex-direction: row">
-    <label for="anons" style="margin-right: 10px">Анонс:</label>
-    <p id="anons" th:text="${el.anons}" style="margin: 0px"></p>
-  </div>
-
-  <div style="display: flex; flex-direction: row">
-    <label for="full_text" style="margin-right: 10px">Текст статьи:</label>
-    <p id="full_text" th:text="${el.full_text}" style="margin: 0px"></p>
-  </div>
-
-  <a th:href="'/blog/' + ${el.id} + '/edit'">Рекдактировато</a>
-
-  <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
-    <button type="submit" class="btn btn-del">Удалить</button>
-  </form>
-  <p>===============</p>
 
 </div>
+
+
+
 
 </body>
 </html>

@@ -3,50 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .page{
+            margin: 0 auto;
+            padding-top: 28px;
+        }
+        h1,h2,h3{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            width: 1221px;
+            height: 80px;
+            margin: 0 auto 26px;
+            align-items: center;
+        }
+        .header__title{
+            padding-left: 17px;
+            border-left: 1px black solid;
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 38px;
+            height: 60px;
+            padding-top: 21px;
+        }
+        .form_class{
+
+
+        }
+        .input-flex{
+            /*height: 200px;*/
+            width: 439px;
+            margin: 50px auto 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .button-flex{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .input-class{
+            width: 371px;
+            height: 49px;
+            background: #D6D6D6;
+            border: 1px solid #898989;
+            border-radius: 20px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            text-align: center;
+            color: black;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+        .button-class{
+            width: 188px;
+            height: 49px;
+            background: #D6D6D6;
+            border-radius: 20px;
+            border: none;
+            transition: background .5s linear;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .button-class:hover {
+            background: #8F8F8F;
+        }
+
+        .content_box{
+            width: 829px;
+            height: 184px;
+            margin: 20px auto 16px;
+            background: #D6D6D6;
+            border-radius: 20px;
+            padding: 24px 34px 0;
+
+
+        }
+        .label__text{
+            margin-right: 10px;
+        }
+        .text_box{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            margin-top: 10px;
+        }
+        .box-flex{
+            display: flex;
+            flex-direction: row;
+        }
+
+    </style>
 </head>
 <body>
-<form>
-    <div style="display: flex; flex-direction: column; width: 200px">
-        <input type="text" name="nick" placeholder="Никнейм">
-        <button formaction="/blog/filter/profile" formmethod="post" type="submit">Неточный поиск</button>
-        <button formaction="/blog/filter/profiles" formmethod="post"  type="submit">Точный поиск</button>
-    </div>
 
+<div class="page">
+    <header class="header">
+        <h1 class="header__title">ПОИСК ОТЗЫВА</h1>
+    </header>
+    <form>
+        <div class="input-flex">
+            <input class="input-class" type="text" name="nick" placeholder="Никнейм">
+            <div class="button-flex">
+                <button class="button-class" formaction="/blog/filter/profile" formmethod="post" type="submit">Неточный поиск</button>
+                <button class="button-class" formaction="/blog/filter/profiles" formmethod="post"  type="submit">Точный поиск</button>
+            </div>
 
-
-    <div th:each="el : ${results}">
-        <div style="display: flex; flex-direction: row">
-            <label for="nick" style="margin-right: 10px">Никнейм:</label>
-            <p id='nick' th:text="${el.nick}" style="margin: 0px; font-weight: bold"></p>
-        </div>
-        <div style="display: flex; flex-direction: row">
-            <label for="name" style="margin-right: 10px" >Имя:</label>
-            <p id='name' th:text="${el.name}" style="margin: 0px"></p>
         </div>
 
-        <div style="display: flex; flex-direction: row">
-            <label for="surname" style="margin-right: 10px">Фамилия:</label>
-            <p id='surname' th:text="${el.surname}" style="margin: 0px"></p>
+
+
+        <div class="content_box" th:each="el : ${results}">
+            <div class="box-flex">
+                <label for="nick" class="text_box label__text">Никнейм:</label>
+                <p id='nick' th:text="${el.nick}" class="text_box"></p>
+            </div>
+            <div class="box-flex">
+                <label for="name" class="text_box label__text" >Имя:</label>
+                <p id='name' th:text="${el.name}" class="text_box"></p>
+            </div>
+
+            <div class="box-flex">
+                <label for="data_reg" class="text_box label__text">Дата регисртрации:</label>
+                <p id='data_reg' th:text="${el.data_reg}" class="text_box"></p>
+            </div>
+
+            <div class="box-flex">
+                <label for="gender" class="text_box label__text" >Отчество:</label>
+                <p id='gender' th:text="${el.gender}" class="text_box"></p>
+            </div>
+
+            <div class="box-flex">
+                <label for="age" class="text_box label__text" >Возраст:</label>
+                <p id='age' th:text="${el.age}" class="text_box"></p>
+            </div>
         </div>
+    </form>
+</div>
 
-        <div style="display: flex; flex-direction: row">
-            <label for="ab" style="margin-right: 10px" >Отчество:</label>
-            <p id='ab' th:text="${el.about_me}" style="margin: 0px"></p>
-        </div>
-
-        <div style="display: flex; flex-direction: row">
-            <label for="age" style="margin-right: 10px" >Возраст:</label>
-            <p id='age' th:text="${el.age}" style="margin: 0px"></p>
-        </div>
-
-        <p>===================</p>
-    </div>
-
-    <!--    <div th:each="el : ${result}">-->
-    <!--        <h3 th:text="${el.title}"></h3>-->
-    <!--        <p th:text="${el.anons}"></p>-->
-    <!--        <strong th:text="${el.full_text}"></strong>-->
-    <!--    </div>-->
-</form>
 </body>
 </html>

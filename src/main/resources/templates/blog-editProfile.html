@@ -3,20 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+  <style>
+    .page{
+      margin: 0 auto;
+      padding-top: 28px;
+    }
+    h1,h2,h3{
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    p{
+      margin: 0;
+      padding: 0;
+    }
+    .header{
+      width: 1221px;
+      height: 80px;
+      margin: 0 auto 26px;
+      align-items: center;
+    }
+    .header__title{
+      padding-left: 17px;
+      border-left: 1px black solid;
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 38px;
+      height: 60px;
+      padding-top: 21px;
+    }
+    .form_class{
+      height: 550px;
+      width: 439px;
+      margin: 50px auto 0;
+
+    }
+    .input-flex{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .input-class{
+      width: 371px;
+      height: 49px;
+      background: #D6D6D6;
+      border: 1px solid #898989;
+      border-radius: 20px;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      text-align: center;
+      color: black;
+      padding: 0;
+      margin-bottom: 24px;
+    }
+    .input-date{
+      padding: 0 20px;
+      width: 330px;
+    }
+    .button-class{
+      width: 188px;
+      height: 49px;
+      background: #D6D6D6;
+      border-radius: 20px;
+      border: none;
+      transition: background .5s linear;
+      cursor: pointer;
+    }
+    .button-class:hover{
+      background: #8F8F8F;
+    }
+    .txtarea-class{
+      height: 50px;
+      padding: 15px 0;
+    }
+  </style>
 </head>
 <body>
 
 
-<div th:each="el : ${profile}" style="display: flex; flex-direction: column; width: 200px">
-  <form method="post">
-    <input type="text" th:value="${el.nick}" name="nick" placeholder="Придумайте никнейм">
-    <input type="text" th:value="${el.surname}" name="surname" placeholder="Фамилия">
-    <input type="text" th:value="${el.name}" name="name" placeholder="Имя">
-    <input type="text" th:value="${el.patron}" name="patron" placeholder="Отчество">
-    <textarea th:value="${el.about_me}" name="about_me" placeholder="Напишите что-нибудь о себе"></textarea>
-    <input type="number" th:value="${el.age}" name="age" placeholder="Возраст">
-    <br>
-    <button type="submit">Сохранить изменения</button>
+<div class="form_class" th:each="el : ${profile}" style="display: flex; flex-direction: column; width: 200px">
+  <form class="input-flex" method="post">
+    <input class="input-class" type="text" th:value="${el.nick}" name="nick" placeholder="Придумайте никнейм">
+    <input class="input-class" type="text" th:value="${el.name}" name="name" placeholder="Имя">
+    <input class="input-class" type="date" th:value="${el.data_reg}" name="data_reg" placeholder="Дата регистрации">
+    <select class="input-class" name="gender" th:value="${el.gender}">
+      <option value="ж">ж</option>
+      <option  value="м">м</option>
+    </select>
+    <input class="input-class" type="number" th:value="${el.age}" name="age" placeholder="Возраст">
+    <button class="button-class" type="submit">Сохранить изменения</button>
   </form>
 </div>
 </body>

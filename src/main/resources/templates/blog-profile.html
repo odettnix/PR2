@@ -103,10 +103,10 @@
       margin-top: 10px;
     }
     .link-more{
-      margin-left: 300px;
+      margin-left: 310px;
     }
     .box-margin{
-      margin-bottom: 70px;
+      margin-bottom: 120px;
     }
   </style>
 </head>
@@ -143,24 +143,21 @@
       </div>
 
       <div class="box-flex">
-        <label for="surname" class="text_box label__text">Фамилия:</label>
-        <p id='surname' th:text="${el.surname}" class="text_box"></p>
+        <label for="data_reg" class="text_box label__text">Дата регистрации:</label>
+        <p id='data_reg' th:text="${el.data_reg}" class="text_box"></p>
       </div>
 
       <div class="box-flex">
-        <label for="patron" class="text_box label__text">Отчетство:</label>
-        <p id='patron' th:text="${el.patron}" class="text_box"></p>
+        <label for="gender" class="text_box label__text">Пол:</label>
+        <p id='gender' th:text="${el.gender}" class="text_box"></p>
       </div>
 
-      <div class="box-flex ">
+      <div class="box-flex box-margin">
         <label for="age" class="text_box label__text">Возраст:</label>
         <p id='age' th:text="${el.age}" class="text_box"></p>
       </div>
 
-      <div class="box-flex box-margin">
-        <label for="ab" class="text_box label__text" >Про себя:</label>
-        <p id='ab' th:text="${el.about_me}" class="text_box"></p>
-      </div>
+
 
 
       <a class="links link-more" th:href="'/blog/Profile/' + ${el.id}">Подробнее &rarr;</a>

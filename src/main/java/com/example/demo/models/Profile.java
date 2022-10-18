@@ -1,18 +1,23 @@
 package com.example.demo.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Year;
 
 @Entity
 public class Profile {
-    public Profile(String nick, String surname, String name, String patron, String about_me, int age) {
+    public Profile(String nick, String name, Date data_reg, char gender, int age) {
         this.nick = nick;
-        this.surname = surname;
         this.name = name;
-        this.patron = patron;
-        this.about_me = about_me;
+        this.data_reg = data_reg;
+        this.gender = gender;
         this.age = age;
     }
 
@@ -22,7 +27,9 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nick, surname, name, patron, about_me;
+    private String nick, name;
+    private Date data_reg;
+    private char gender;
     private int age;
 
     public String getNick() {
@@ -41,13 +48,6 @@ public class Profile {
         this.id = id;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public String getName() {
         return name;
@@ -57,20 +57,21 @@ public class Profile {
         this.name = name;
     }
 
-    public String getPatron() {
-        return patron;
+    public Date getData_reg() {
+        return data_reg;
     }
 
-    public void setPatron(String patron) {
-        this.patron = patron;
+
+    public void setData_reg(Date data_reg) {
+        this.data_reg = data_reg;
     }
 
-    public String getAbout_me() {
-        return about_me;
+    public char getGender() {
+        return gender;
     }
 
-    public void setAbout_me(String about_me) {
-        this.about_me = about_me;
+    public void setGender(char gender) {
+        this.gender = gender;
     }
 
     public int getAge() {

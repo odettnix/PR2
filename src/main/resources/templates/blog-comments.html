@@ -121,8 +121,8 @@
     <form >
         <div class="content_box" th:each="el : ${comments}">
             <div class="box-flex">
-                <label class="text_box label__text" for="heading" style="margin-right: 10px">Заголовок:</label>
-                <p id='heading' th:text="${el.heading}" class="text_box"></p>
+                <label class="text_box label__text" for="recommend" style="margin-right: 10px">Рекомендация пользователя: </label>
+                <p id='recommend' th:text="${el.recommend}" class="text_box"></p>
             </div>
             <div class="box-flex">
                 <label class="text_box label__text" for="text_otz" style="margin-right: 10px" >Текст отзыва:</label>

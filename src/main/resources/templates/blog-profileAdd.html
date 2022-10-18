@@ -3,20 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .page{
+            margin: 0 auto;
+            padding-top: 28px;
+        }
+        h1,h2,h3{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            width: 1221px;
+            height: 80px;
+            margin: 0 auto 26px;
+            align-items: center;
+        }
+        .header__title{
+            padding-left: 17px;
+            border-left: 1px black solid;
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 38px;
+            height: 60px;
+            padding-top: 21px;
+        }
+        .form_class{
+            height: 550px;
+            width: 439px;
+            margin: 50px auto 0;
+
+        }
+        .input-flex{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .input-class{
+            width: 371px;
+            height: 49px;
+            background: #D6D6D6;
+            border: 1px solid #898989;
+            border-radius: 20px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            text-align: center;
+            color: black;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+        .input-date{
+            padding: 0 20px;
+            width: 330px;
+        }
+        .button-class{
+            width: 188px;
+            height: 49px;
+            background: #D6D6D6;
+            border-radius: 20px;
+            border: none;
+            transition: background .5s linear;
+            cursor: pointer;
+        }
+        .button-class:hover{
+            background: #8F8F8F;
+        }
+    </style>
 </head>
 <body>
-<form th:action="${'/blog/ProfileAdd'}" method="post">
-    <div style="display: flex; flex-direction: column; width: 200px">
-        <input type="text" name="nick" placeholder="Придумайте никнейм">
-        <input type="text" name="surname" placeholder="Фамилия">
-        <input type="text" name="name" placeholder="Имя">
-        <input type="text" name="patron" placeholder="Отчество">
-        <textarea name="about_me" placeholder="Напишите что-нибудь о себе"></textarea>
-        <input type="number" name="age" placeholder="Возраст">
-        <br>
-        <button type="submit">Добавить профиль</button>
-    </div>
-</form>
+<div class="page">
+    <header class="header">
+        <h1 class="header__title">ДОБАВЛЕНИЕ ПРОФИЛЯ</h1>
+    </header>
+
+
+    <form class="form_class" th:action="${'/blog/ProfileAdd'}" method="post">
+        <div class="input-flex">
+            <input class="input-class" type="text"  name="nick" placeholder="ПРИДУМАТЕ НИКНЕЙМ">
+            <input class="input-class" type="text" name="name" placeholder="ИМЯ">
+            <input class="input-class input-date" type="date" name="data_reg" placeholder="ДАТА РЕГИСТРАЦИИ">
+            <select class="input-class"  name="gender">
+                <option value="ж">ЖЕНСКИЙ</option>
+                <option  value="м">МУЖСКОЙ</option>
+            </select>
+            <input class="input-class" type="number" name="age" placeholder="ВОЗРАСТ">
+
+            <button class="button-class" type="submit">СОЗДАТЬ</button>
+        </div>
+    </form>
+</div>
+
 
 
 </body>
