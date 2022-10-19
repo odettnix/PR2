@@ -86,16 +86,20 @@
     </header>
 
 
-    <form class="form_class" th:action="${'/blog/ProfileAdd'}" method="post">
+    <form class="form_class" th:action="${'/blog/ProfileAdd'}" method="post" th:object="${profile}">
         <div class="input-flex">
-            <input class="input-class" type="text"  name="nick" placeholder="ПРИДУМАТЕ НИКНЕЙМ">
-            <input class="input-class" type="text" name="name" placeholder="ИМЯ">
-            <input class="input-class input-date" type="date" name="data_reg" placeholder="ДАТА РЕГИСТРАЦИИ">
+            <input class="input-class" type="text"  name="nick" th:field="*{nick}" placeholder="ПРИДУМАТЕ НИКНЕЙМ">
+            <div th:if="${#fields.hasErrors('nick')}" th:errors="*{nick}"></div>
+            <input class="input-class" type="text" name="name" th:field="*{name}"  placeholder="ИМЯ">
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            <input class="input-class input-date" type="date" required  name="data_reg" th:field="*{data_reg}" placeholder="ДАТА РЕГИСТРАЦИИ">
+            <div th:if="${#fields.hasErrors('data_reg')}"  th:errors="*{data_reg}"></div>
             <select class="input-class"  name="gender">
                 <option value="ж">ЖЕНСКИЙ</option>
                 <option  value="м">МУЖСКОЙ</option>
             </select>
-            <input class="input-class" type="number" name="age" placeholder="ВОЗРАСТ">
+            <input class="input-class" type="number" name="age" th:field="*{age}" placeholder="ВОЗРАСТ">
+            <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
 
             <button class="button-class" type="submit">СОЗДАТЬ</button>
         </div>

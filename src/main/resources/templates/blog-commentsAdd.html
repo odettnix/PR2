@@ -89,22 +89,16 @@
   <header class="header">
     <h1 class="header__title">ДОБАВЛЕНИЕ ОТЗЫВА</h1>
   </header>
-  <form class="form_class" th:action="${'/blog/commentsAdd'}" method="post">
+  <form class="form_class" th:action="${'/blog/commentsAdd'}" th:object="${commentari}" method="post">
     <div class="input-flex">
-      <input class="input-class" type="text" name="text_otz" placeholder="Текст отзыва">
-      <input class="input-class" type="text" name="author" placeholder="Автор отзыва">
-      <input class="input-class" type="date" name="date_otz" placeholder="Дата">
-
-
-      <select title="Оценка" id="mark" class="input-class"  name="mark">
-        <option value="1">1</option>
-        <option  value="2">2</option>
-        <option  value="3">3</option>
-        <option  value="4">4</option>
-        <option  value="5">5</option>
-      </select>
-
-
+      <input class="input-class" th:field="*{text_otz}" type="text" name="text_otz" placeholder="Текст отзыва">
+      <div th:if="${#fields.hasErrors('text_otz')}" th:errors="*{text_otz}"></div>
+      <input class="input-class" th:field="*{author}" type="text" name="author" placeholder="Автор отзыва">
+      <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+      <input class="input-class" th:field="*{date_otz}" required type="date" name="date_otz" placeholder="Дата">
+      <div th:if="${#fields.hasErrors('date_otz')}" th:errors="*{date_otz}"></div>
+      <input type="number" name="mark" th:field="*{mark}" title="Оценка от 1 до 5" class="input-class">
+      <div th:if="${#fields.hasErrors('mark')}" th:errors="*{mark}"></div>
       <select title="Рекомендует ли пользователь" id="recommend" class="input-class"  name="recommend">
         <option value="+">да</option>
         <option  value="-">нет</option>

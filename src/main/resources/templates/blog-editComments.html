@@ -84,20 +84,17 @@
     </style>
 </head>
 <body>
-<div class="form_class" th:each="el : ${comments}" style="display: flex; flex-direction: column; width: 200px">
+<div class="form_class" th:object="${comments}" style="display: flex; flex-direction: column; width: 200px">
     <form class="input-flex" method="post">
 
-        <input class="input-class" type="text" th:value="${el.text_otz}" name="text_otz" placeholder="Текст отзыва">
-        <input class="input-class" type="text" th:value="${el.author}" name="author" placeholder="Автор отзыва">
-        <input class="input-class" type="date" th:value="${el.date_otz}" name="date_otz" placeholder="Дата">
-        <select class="input-class"  name="mark">
-            <option value="1">1</option>
-            <option  value="2">2</option>
-            <option  value="3">3</option>
-            <option  value="4">4</option>
-            <option  value="5">5</option>
-        </select>
-
+        <input class="input-class" type="text" th:field="*{text_otz}" th:value="*{text_otz}" name="text_otz" placeholder="Текст отзыва">
+        <div th:if="${#fields.hasErrors('text_otz')}" th:errors="*{text_otz}"></div>
+        <input class="input-class" type="text" th:field="*{author}" th:value="*{author}" name="author" placeholder="Автор отзыва">
+        <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+        <input class="input-class" type="date" required th:field="*{date_otz}" th:value="*{date_otz}" name="date_otz" placeholder="Дата">
+        <div th:if="${#fields.hasErrors('date_otz')}" th:errors="*{date_otz}"></div>
+        <input class="input-class" type="number" th:field="*{mark}" th:value="*{mark}" name="mark" >
+        <div th:if="${#fields.hasErrors('mark')}" th:errors="*{mark}"></div>
         <select class="input-class"  name="recommend">
             <option value="+">да</option>
             <option  value="-">нет</option>

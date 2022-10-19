@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -27,9 +28,20 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty(message = "Поле не может быть пустым")
+    @NotBlank(message = "Поле не должно состоять из одних пробелов")
+    @Size(min=1, max=50, message = "Размер данного поля должен быть в диапозоне от 1 до 50")
     private String nick, name;
+
+
+    @PastOrPresent(message = "Выбранная вами дата должна быть либо в настоящем, либо в прошлом")
+//    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
     private Date data_reg;
+
     private char gender;
+    @Min(value = 16, message = "Пользователь должен быть старше 16")
+    @NotNull(message = "Поле не может быть пустым")
+    @Positive(message = "Поле должно быть больше 0")
     private int age;
 
     public String getNick() {

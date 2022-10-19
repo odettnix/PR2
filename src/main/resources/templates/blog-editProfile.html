@@ -86,16 +86,20 @@
 <body>
 
 
-<div class="form_class" th:each="el : ${profile}" style="display: flex; flex-direction: column; width: 200px">
+<div class="form_class" th:each="el : ${profile}"  th:object="${profile}" style="display: flex; flex-direction: column; width: 200px">
   <form class="input-flex" method="post">
-    <input class="input-class" type="text" th:value="${el.nick}" name="nick" placeholder="Придумайте никнейм">
-    <input class="input-class" type="text" th:value="${el.name}" name="name" placeholder="Имя">
-    <input class="input-class" type="date" th:value="${el.data_reg}" name="data_reg" placeholder="Дата регистрации">
-    <select class="input-class" name="gender" th:value="${el.gender}">
+    <input class="input-class" th:field="*{nick}"  type="text" th:value="*{nick}" name="nick" placeholder="Придумайте никнейм">
+    <div th:if="${#fields.hasErrors('nick')}" th:errors="*{nick}"></div>
+    <input class="input-class" th:field="*{name}" type="text" th:value="*{name}" name="name"  placeholder="Имя">
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <input class="input-class" th:field="*{data_reg}" required type="date" th:value="*{data_reg}"  name="data_reg" placeholder="Дата регистрации">
+    <div th:if="${#fields.hasErrors('data_reg')}" th:errors="*{data_reg}"></div>
+    <select class="input-class" name="gender" th:value="*{gender}">
       <option value="ж">ж</option>
       <option  value="м">м</option>
     </select>
-    <input class="input-class" type="number" th:value="${el.age}" name="age" placeholder="Возраст">
+    <input class="input-class" th:field="*{age}" type="number" th:value="*{age}" name="age" placeholder="Возраст">
+    <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
     <button class="button-class" type="submit">Сохранить изменения</button>
   </form>
 </div>
