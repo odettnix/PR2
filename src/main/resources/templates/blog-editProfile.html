@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -86,20 +86,24 @@
 <body>
 
 
-<div class="form_class" th:each="el : ${profile}"  th:object="${profile}" style="display: flex; flex-direction: column; width: 200px">
+<div class="form_class" th:each="el : ${user}"  th:object="${user}" style="display: flex; flex-direction: column; width: 200px">
   <form class="input-flex" method="post">
-    <input class="input-class" th:field="*{nick}"  type="text" th:value="*{nick}" name="nick" placeholder="Придумайте никнейм">
-    <div th:if="${#fields.hasErrors('nick')}" th:errors="*{nick}"></div>
+    <input class="input-class" th:field="*{username}"  type="text" th:value="*{username}" name="username" placeholder="Придумайте никнейм">
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
     <input class="input-class" th:field="*{name}" type="text" th:value="*{name}" name="name"  placeholder="Имя">
     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     <input class="input-class" th:field="*{data_reg}" required type="date" th:value="*{data_reg}"  name="data_reg" placeholder="Дата регистрации">
     <div th:if="${#fields.hasErrors('data_reg')}" th:errors="*{data_reg}"></div>
+    <input class="input-class" th:field="*{password}" required type="text" th:value="*{password}"  name="password" placeholder="Пароль" style="display: none">
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     <select class="input-class" name="gender" th:value="*{gender}">
-      <option value="ж">ж</option>
-      <option  value="м">м</option>
+      <option value="ж">женщина</option>
+      <option  value="м">мужчина</option>
     </select>
     <input class="input-class" th:field="*{age}" type="number" th:value="*{age}" name="age" placeholder="Возраст">
     <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+
+
     <button class="button-class" type="submit">Сохранить изменения</button>
   </form>
 </div>

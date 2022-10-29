@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -37,7 +37,8 @@
         }
         .content_box{
             width: 829px;
-            height: 184px;
+            max-height: 340px;
+            min-height: 300px;
             margin: 20px auto 16px;
             background: #D6D6D6;
             border-radius: 20px;
@@ -54,6 +55,7 @@
             line-height: 19px;
             margin-top: 10px;
         }
+
         .box-flex{
             display: flex;
             flex-direction: row;
@@ -62,6 +64,11 @@
             text-decoration: none;
             color: black;
             transition: opacity .5s linear;
+
+        }
+
+
+        .links:last-child{
             margin-left: 600px;
         }
         .links:hover{
@@ -92,47 +99,111 @@
             justify-content: space-between;
             flex-direction: row;
             align-items: center;
+            margin:10px;
         }
+        .box{
+            margin-bottom: 10px;
+        }
+
+        .infolink{
+            padding: 2px;
+            border: #898989 1px solid;
+        }
+
+
+
+        .out{
+            border: none;
+            cursor: pointer;
+            background-color: #D6D6D6;
+            color: white;
+            transition: opacity .5s linear;
+        }
+
+        .out:hover{
+            opacity: .7;
+        }
+
+        .form_out{
+            width: 1500px;
+            display: flex;
+            justify-content: flex-end;
+
+        }
+
+
 
     </style>
 </head>
 <body>
 
 <div class="page">
+    <form class="form_out" th:action="@{/logout}" method="post">
+        <button class="out" type="submit">Выход</button>
+    </form>
     <header class="header">
         <h1 class="header__title">ДЕТАЛИ ПРОФИЛЯ</h1>
     </header>
 
     <div class="content_box" th:each="el : ${profile}">
-        <div class="box-flex">
-            <label for="nick" class="text_box label__text">Никнейм:</label>
-            <p id='nick' th:text="${el.nick}" class="text_box"></p>
-        </div>
-        <div class="box-flex">
-            <label for="name" class="text_box label__text" >Имя:</label>
-            <p id='name' th:text="${el.name}" class="text_box"></p>
-        </div>
+        <div class="box">
+            <div class="box-flex">
+                <label for="nick" class="text_box label__text">Никнейм:</label>
+                <p id='nick' th:text="${el.username}" class="text_box"></p>
+            </div>
+            <div class="box-flex">
+                <label for="name" class="text_box label__text" >Имя:</label>
+                <p id='name' th:text="${el.name}" class="text_box"></p>
+            </div>
 
 
-        <div class="box-flex">
-            <label for="data_reg" class="text_box label__text">Дата регистрации:</label>
-            <p id='data_reg' th:text="${el.data_reg}" class="text_box"></p>
-        </div>
+            <div class="box-flex">
+                <label for="data_reg" class="text_box label__text">Дата регистрации:</label>
+                <p id='data_reg' th:text="${el.data_reg}" class="text_box"></p>
+            </div>
 
-        <div class="box-flex">
-            <label for="gender" class="text_box label__text" >Пол:</label>
-            <p id='gender' th:text="${el.gender}" class="text_box"></p>
-        </div>
+            <div class="box-flex">
+                <label for="gender" class="text_box label__text" >Пол:</label>
+                <p id='gender' th:text="${el.gender}" class="text_box"></p>
+            </div>
 
-        <div class="box-flex">
-            <label for="age" class="text_box label__text" >Возраст:</label>
-            <p id='age' th:text="${el.age}" class="text_box"></p>
-        </div>
+            <div class="box-flex">
+                <label for="age" class="text_box label__text" >Возраст:</label>
+                <p id='age' th:text="${el.age}" class="text_box"></p>
+            </div>
+
+            <div th:if="${el.moreInfo != null}">
+                <div class="box-flex">
+                    <label for="email" class="text_box label__text" >Почта:</label>
+                    <p id='email' th:text="${el.moreInfo != null} ? ${el.moreInfo.email} : ''" class="text_box"></p>
+                </div>
+
+                <div class="box-flex">
+                    <label for="phone" class="text_box label__text" >Мобильный номер:</label>
+                    <p id='phone' th:text="${el.moreInfo != null} ? ${el.moreInfo.phone} : ''" class="text_box"></p>
+                </div>
+
+                <div class="box-flex">
+                    <label for="hphone" class="text_box label__text" >Домашний номер:</label>
+                    <p id='hphone' th:text="${el.moreInfo != null} ? ${el.moreInfo.homephone} : ''" class="text_box"></p>
+                </div>
+            </div>
+            </div>
+
+
+
+
+        <a class="links infolink" th:if="${el.moreInfo == null}" th:href="'/contacts/add/' + ${el.id}">Дополнить информацию &rarr;</a>
+        <a class="links infolink" th:if="${el.moreInfo != null}" th:href="'/contacts/add/' + ${el.moreInfo.id} +'/edit'">Изменить информацию</a>
+        <a class="links infolink" th:if="${el.moreInfo != null}" th:href="'/contacts/add/' + ${el.moreInfo.id} +'/delete'">Удалить информацию</a>
+
+
 
         <div class="flex-link">
             <form th:action="'/blog/Profile/' + ${el.id} + '/remove'" method="post">
                 <button type="submit" class="button-class">Удалить</button>
             </form>
+
             <a class="links link-more" th:href="'/blog/Profile/' + ${el.id} + '/edit'">Рекдактировать</a>
         </div>
 

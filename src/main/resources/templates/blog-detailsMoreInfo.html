@@ -37,7 +37,7 @@
     }
     .content_box{
       width: 829px;
-      height: 184px;
+      height: 260px;
       margin: 20px auto 16px;
       background: #D6D6D6;
       border-radius: 20px;
@@ -82,14 +82,14 @@
       font-size: 13px;
       line-height: 16px;
       color: #FFFFFF;
-
+      /*margin-bottom: 10px;*/
     }
     .button-class:hover {
       opacity: .8;
     }
+
     .flex-link{
       display: flex;
-      justify-content: space-between;
       flex-direction: row;
       align-items: center;
     }
@@ -111,6 +111,7 @@
       justify-content: flex-end;
 
     }
+
   </style>
 </head>
 <body>
@@ -120,45 +121,74 @@
     <button class="out" type="submit">Выход</button>
   </form>
   <header class="header">
-    <h1 class="header__title">ДЕТАЛИ КОММЕНТАРИЯ</h1>
+    <h1 class="header__title">ДЕТАЛИ</h1>
   </header>
 
-  <div class="content_box" th:each="el : ${comments}">
+  <div class="content_box" th:each="el : ${moreinfo}">
+
     <div class="box-flex">
-      <label for="recommend" class="text_box label__text">Рекомендация:</label>
-      <p id='recommend' th:text="${el.recommend}" class="text_box"></p>
-    </div>
-    <div class="box-flex">
-      <label for="text_otz" class="text_box label__text" >Текст отзыва:</label>
-      <p id='text_otz' th:text="${el.text_otz}" class="text_box"></p>
+      <label for="username" class="text_box label__text">Никнейм:</label>
+      <p id="username" th:text="${el.user.username}" class="text_box"></p>
     </div>
 
     <div class="box-flex">
-      <label for="author" class="text_box label__text">Автор:</label>
-      <p id='author' th:text="${el.author}" class="text_box"></p>
+      <label for="name" class="text_box label__text">Имя:</label>
+      <p id="name" th:text="${el.user.name}" class="text_box"></p>
     </div>
 
     <div class="box-flex">
-      <label for="date_otz" class="text_box label__text" >Дата написания отзыва:</label>
-      <p id='date_otz' th:text="${el.date_otz}" class="text_box"></p>
+      <label for="data_reg" class="text_box label__text">Дата регистрации:</label>
+      <p id="data_reg" th:text="${el.user.data_reg}" class="text_box"></p>
     </div>
 
     <div class="box-flex">
-      <label for="mark" class="text_box label__text" >Оценка отзыва:</label>
-      <p id='mark' th:text="${el.mark}" class="text_box"></p>
+      <label for="age" class="text_box label__text">Возраст:</label>
+      <p id="age" th:text="${el.user.age}" class="text_box"></p>
     </div>
+
+    <div class="box-flex">
+      <label for="gender" class="text_box label__text">Пол:</label>
+      <p id="gender" th:text="${el.user.gender}" class="text_box"></p>
+    </div>
+
+    <div class="box-flex">
+      <label for="title" class="text_box label__text">Почта:</label>
+      <h3 id="title" th:text="${el.email}" class="text_box"></h3>
+    </div>
+
+    <div class="box-flex">
+      <label for="anons" class="text_box label__text">Мобильный номер:</label>
+      <p id="anons" th:text="${el.phone}" class="text_box"></p>
+    </div>
+
+
+
+<!--    <div class="box-flex">-->
+<!--      <label for="full_text" class="text_box label__text">Домашний номер:</label>-->
+<!--      <p id="full_text" th:text="${el.homephone}" class="text_box"></p>-->
+<!--    </div>-->
+
+<!--    <div class="box-flex">-->
+<!--      <label for="full_text" class="text_box label__text">Пользователь:</label>-->
+<!--      <p id="nick" th:text="${el.profile.username}" class="text_box"></p>-->
+<!--    </div>-->
+
 
 
     <div class="flex-link">
-      <form th:action="'/blog/Comments/' + ${el.id} + '/remove'" method="post">
+      <form th:action="'/blog/MoreInfo/' + ${el.id} + '/remove'" method="post">
         <button type="submit" class="button-class">Удалить</button>
       </form>
-
-      <a class="links link-more" th:href="'/blog/Comments/' + ${el.id} + '/edit'">Рекдактировать &rarr;</a>
+      <a class="links link-more" th:href="'/blog/MoreInfo/' + ${el.id} + '/edit'">Редактировать &rarr;</a>
     </div>
 
+
   </div>
+
 </div>
+
+
+
 
 </body>
 </html>

@@ -1,19 +1,19 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
+@Table(name = "post")
 public class Post {
-    public Post(String title, String anons, String full_text) {
+    public Post(String title, String anons, String full_text, User user) {
         this.title = title;
         this.anons = anons;
         this.full_text = full_text;
+        this.user = user;
     }
 
     public Post() {
@@ -28,6 +28,23 @@ public class Post {
     @Size(min=2, max=50, message = "Размер данного поля должен быть в диапозоне от 2 до 50")
     private String title, anons, full_text;
     private int views;
+
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
+    public User user;
+
+    @ManyToMany
+    @JoinTable (name="post_user",
+            joinColumns=@JoinColumn (name="post_id"),
+            inverseJoinColumns=@JoinColumn(name="user_id"))
+    public List<User> users;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public Long getId() {
         return id;
@@ -67,5 +84,13 @@ public class Post {
 
     public void setViews(int views) {
         this.views = views;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

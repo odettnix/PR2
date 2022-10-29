@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    .page{
+      margin: 0 auto;
+      padding-top: 28px;
+    }
+    h1,h2,h3{
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    p{
+      margin: 0;
+      padding: 0;
+    }
+
+    .header{
+      max-width: 1220px;
+      max-height: 80px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-content: center;
+      margin: 0 auto 32px;
+    }
+    .posts{
+      display: flex;
+      flex-direction: column;
+      padding-left: 16px;
+      padding-top: 9px;
+      border-left: black 1px solid;
+      position: relative;
+    }
+
+    .header__post{
+      display: flex;
+      flex-direction: row;
+      height: 80px;
+    }
+    .header__title{
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 38px;
+      margin-right: 26px;
+      margin-top: 14px;
+    }
+    .links{
+      text-decoration: none;
+      color: black;
+      transition: opacity .5s linear;
+    }
+    .links:hover{
+      opacity: .5;
+      text-decoration: underline;
+    }
+    .main-link{
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
+    }
+    .other-link{
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+    }
+    .other-link:first-child{
+      margin-right: 26px;
+    }
+    .content_box{
+      width: 829px;
+      height: 184px;
+      margin: 0 auto 16px;
+      background: #D6D6D6;
+      border-radius: 5px;
+
+      padding: 24px 34px 0;
+
+
+    }
+    .label__text{
+      margin-right: 10px;
+    }
+    .text_box{
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      margin-top: 10px;
+    }
+    .box-flex{
+      display: flex;
+      flex-direction: row;
+    }
+
+    .box-margin{
+      margin-bottom: 50px;
+    }
+    .link-more{
+      margin-left: 500px;
+    }
+
+    .out{
+      border: none;
+      cursor: pointer;
+      background-color: #D6D6D6;
+      color: white;
+      transition: opacity .5s linear;
+    }
+
+    .out:hover{
+      opacity: .7;
+    }
+
+    .form_out{
+      width: 1500px;
+      display: flex;
+      justify-content: flex-end;
+
+    }
+
+  </style>
+</head>
+<body>
+<div class="page">
+  <form class="form_out" th:action="@{/logout}" method="post">
+    <button class="out" type="submit">Выход</button>
+  </form>
+  <header class="header">
+    <div class="header__post">
+      <h1 class="header__title">Подборки</h1>
+      <div class="posts">
+        <a class="links main-link" href="/blog/Cardadd" sec:authorize="hasAuthority('USER')">Добавить подборку</a>
+      </div>
+
+    </div>
+
+    <div class="header__nav-links">
+      <a class="links other-link" href="/blog/profile" sec:authorize="hasAuthority('USER')">Профили</a>
+      <a class="links " href="/blog/comments">Отзывы</a>
+    </div>
+
+
+  </header>
+
+  <main class="content" >
+
+
+
+    <div class="content_box" th:each="el : ${profile}">
+      <div class="box-flex">
+        <label for="nick" class="text_box label__text">Пользователь:</label>
+        <p id='nick' th:text="${el.getUsername()}" class="text_box"></p>
+
+      </div>
+
+      <div class="box-flex"  th:each="post : ${el.getPosts()}">
+        <label for="name" class="text_box label__text" >Статья:</label>
+        <p id='name' th:text="${post.getTitle()}" class="text_box"></p>
+        <form class="box-margin" th:action="'/blog/Card/' + ${el.id} + '/' + ${post.id}" method="get">
+          <button type="submit" class="button-class">Удалить</button>
+        </form>
+        <div >
+          <a class="links link-more" th:href="'/blog/Card/' + ${el.id} + '/' + ${post.id} + '/edit'">Рекдактировать</a>
+        </div>
+      </div>
+
+
+    </div>
+
+  </main>
+
+
+
+
+
+</div>
+
+</body>
+</html>

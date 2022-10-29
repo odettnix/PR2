@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>Отзыв</title>
@@ -100,21 +100,43 @@
         .link-more{
             margin-left: 730px;
         }
+        .out{
+            border: none;
+            cursor: pointer;
+            background-color: #D6D6D6;
+            color: white;
+            transition: opacity .5s linear;
+        }
+
+        .out:hover{
+            opacity: .7;
+        }
+
+        .form_out{
+            width: 1500px;
+            display: flex;
+            justify-content: flex-end;
+
+        }
+
     </style>
 </head>
 <body>
 <div class="page">
+    <form class="form_out" th:action="@{/logout}" method="post">
+        <button class="out" type="submit">Выход</button>
+    </form>
     <header class="header">
         <div class="header__comments">
             <h1 class="header__title">ОТЗЫВЫ</h1>
             <div class="comments">
-                <a class="links main-link" href="/blog/commentsAdd">Добавить отзыв</a>
-                <a class="links" href="/blog/filerComments">Поиск отзывов</a>
+                <a class="links main-link" href="/blog/commentsAdd" sec:authorize="hasAuthority('USER')">Добавить отзыв</a>
+                <a class="links" href="/blog/filerComments" sec:authorize="hasAuthority('USER')">Поиск отзывов</a>
             </div>
         </div>
         <div class="header__nav-links">
             <a class="links other-link" href="/">Статьи</a>
-            <a class="links other-link" href="/blog/profile">Профили</a>
+            <a class="links other-link" href="/blog/profile" sec:authorize="hasAuthority('USER')">Профили</a>
         </div>
     </header>
 

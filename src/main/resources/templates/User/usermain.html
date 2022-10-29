@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <title>Список пользователей</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<style>
+  .page{
+    margin: 0 auto;
+    padding-top: 28px;
+  }
+  h1,h2,h3{
+    margin: 0;
+    padding: 0;
+  }
+  body{
+    margin: 0;
+    padding: 0;
+  }
+  p{
+    margin: 0;
+    padding: 0;
+  }
+
+  .header{
+    max-width: 1220px;
+    max-height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    margin: 0 auto 32px;
+  }
+  .profiles{
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    padding-top: 9px;
+    border-left: black 1px solid;
+    position: relative;
+  }
+  .header__profile{
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+  }
+  .header__title{
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    margin-right: 26px;
+    margin-top: 14px;
+  }
+  .links{
+    text-decoration: none;
+    color: black;
+    transition: opacity .5s linear;
+  }
+  .links:hover{
+    opacity: .5;
+    text-decoration: underline;
+  }
+  .main-link{
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .other-link{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    margin-right: 26px;
+  }
+  .other-link:last-child{
+    margin-right: 0;
+  }
+  .content_box{
+    width: 405px;
+    height: 210px;
+    margin-bottom: 16px;
+    background: #D6D6D6;
+    border-radius: 20px;
+    padding: 28px 36px 0;
+  }
+  .content{
+    margin: 0 auto;
+    width: 995px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+  }
+  .box-flex{
+    display: flex;
+    flex-direction: row;
+  }
+  .label__text{
+    margin-right: 10px;
+  }
+  .text_box{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    margin-top: 10px;
+  }
+  .link-more{
+    margin-left: 275px;
+  }
+  .box-margin{
+    margin-bottom: 20px;
+  }
+  .out{
+    border: none;
+    cursor: pointer;
+    background-color: #D6D6D6;
+    color: white;
+    transition: opacity .5s linear;
+  }
+
+  .out:hover{
+    opacity: .7;
+  }
+
+  .form_out{
+    width: 1500px;
+    display: flex;
+    justify-content: flex-end;
+
+  }
+</style>
+<body>
+
+<form class="content">
+  <div  th:each="el : ${user}">
+    <div class="content_box">
+      <div class="box-flex">
+        <label for="username" class="text_box label__text">Никнейм:</label>
+        <p id='username' th:text="${el.username}" class="text_box"></p>
+      </div>
+      <div class="box-flex">
+        <label for="name" class="text_box label__text" >Имя:</label>
+        <p id='name'  th:text="${el.name}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex">
+        <label for="data_reg" class="text_box label__text">Дата регистрации:</label>
+        <p id='data_reg' th:text="${el.data_reg}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex">
+        <label for="gender" class="text_box label__text">Пол:</label>
+        <p id='gender' th:text="${el.gender}" class="text_box"></p>
+      </div>
+
+      <div class="box-flex box-margin">
+        <label for="age" class="text_box label__text">Возраст:</label>
+        <p id='age' th:text="${el.age}" class="text_box"></p>
+      </div>
+      <!--      <a class="links infolink" th:if="${el.moreinfo == null}" th:href="'/contacts/add/' + ${el.id}">Дополнить информацию &rarr;</a>-->
+      <a th:href="'/admin/' + ${el.id} + '/edit'" class="links">Редактировать &rarr;</a>
+
+
+
+
+
+
+      <!--      <a class="links link-more" th:href="'/blog/Profile/' + ${el.id}">Подробнее &rarr;</a>-->
+    </div>
+
+  </div>
+</form>
+
+</body>
+</html>

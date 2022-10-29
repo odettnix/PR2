@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form class="form_class card" th:action="${'/blog/Carddd'}" method="post" >
+
+        <select name="user_id"  class="form-control">
+          <div th:each="el : ${profile}">
+            <option th:value="${el.id}" th:text="${el.username}"/>
+          </div>
+        </select>
+      <select name="post_id"  class="form-control">
+        <div th:each="el : ${post}">
+          <option th:value="${el.id}" th:text="${el.title}"/>
+        </div>
+      </select>
+
+        <button class="action-button" type="submit">СОЗДАТЬ</button>
+    </form>
+
+</body>
+</html>

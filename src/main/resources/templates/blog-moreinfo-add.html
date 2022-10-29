@@ -1,8 +1,9 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Добавление новой статьи</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <title>Title</title>
+
   <style>
     .page{
       margin: 0 auto;
@@ -170,37 +171,43 @@
       opacity: .5;
     }
   </style>
-
-
 </head>
 <body>
 <div class="page">
   <div class="class-header">
     <header class="header">
-       <div class="header-border">
-         <h1 class="header__title">ДОБАВЛЕНИЕ СТАТЬИ</h1>
-         <a class="links" href="/">СТАТЬИ</a>
-       </div>
+      <div class="header-border">
+        <h1 class="header__title">БОЛЬШЕ ИНФОРМАЦИИ</h1>
+        <a class="links" href="/">СТАТЬИ</a>
+      </div>
 
     </header>
   </div>
 
 
 
-  <form class="form_class card" th:action="${'/blog/add'}" method="post" th:object="${post}">
+  <form class="form_class card" th:action="${'/blog/MoreInfoadd'}" method="post" th:object="${moreInfo}">
     <div class="input-flex input">
-      <div class="div-valid" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-      <input th:field="*{title}" class="input-field" type="text"  name="title" placeholder="Название статьи">
-      <div class="div-valid" th:if="${#fields.hasErrors('anons')}" th:errors="*{anons}"></div>
-      <input th:field="*{anons}" class="input-field" type="text"  name="anons" placeholder="Анонс статьи">
-      <div class="div-valid" th:if="${#fields.hasErrors('full_text')}" th:errors="*{full_text}"></div>
-      <textarea th:field="*{full_text}" class="input-field txtarea-class" name="full_text"  placeholder="Текст статьи"></textarea>
+<!--      <div class="div-valid" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
+      <span class="div-valid" th:if="${email_error != null}" th:text="${email_error}"></span>
+      <span class="div-valid" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+      <input th:field="*{email}" th:value="${moreInfo.email}" class="input-field" type="text"  name="title" placeholder="Почта">
 
-      <select th:field="*{user}" class="form-control">
-        <div th:each="el : ${profile}">
+
+      <span class="div-valid" th:if="${phone_error != null}" th:text="${phone_error}"></span>
+      <span class="div-valid" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+      <input th:field="*{phone}" class="input-field" type="number"  name="anons" placeholder="Мобильный номер">
+<!--      <div class="div-valid" th:if="${#fields.hasErrors('homephone')}" th:errors="*{homephone}"></div>-->
+<!--      <input th:field="*{homephone}" class="input-field" name="full_text"  placeholder="Домашний номер">-->
+
+      <span class="div-valid" th:if="${user_error != null}" th:text="${user_error}"></span>
+      <span class="div-valid" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></span>
+      <select class="input-field" th:field="*{user}">
+        <div th:each="el : ${user}">
           <option th:value="${el.id}" th:text="${el.username}"/>
         </div>
       </select>
+
 
       <button class="action-button" type="submit">СОЗДАТЬ</button>
     </div>

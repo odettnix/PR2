@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="form_class">
+  <form class="input-flex" method="post">
+
+
+      <select name="user_id"  class="form-control">
+          <div th:each="el : ${user}">
+          <option th:value="${el.id}" th:text="${el.username}"/>
+
+          </div>
+      </select>
+
+      <select name="post_id"  class="form-control">
+          <div th:each="post : ${post}">
+              <option th:value="${post.id}" th:text="${post.title}"/>
+          </div>
+      </select>
+
+    <button class="button-class" type="submit">Сохранить изменения</button>
+  </form>
+</div>
+
+</body>
+</html>

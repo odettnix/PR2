@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import org.apache.tomcat.jni.Address;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -11,11 +12,24 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Year;
+import java.util.Collection;
+import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
+
+
+
+
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.util.Collection;
 
 @Entity
+@Table(name = "profile")
 public class Profile {
-    public Profile(String nick, String name, Date data_reg, char gender, int age) {
-        this.nick = nick;
+    public Profile(String username, String name, Date data_reg, char gender, int age) {
+        this.username = username;
         this.name = name;
         this.data_reg = data_reg;
         this.gender = gender;
@@ -28,10 +42,19 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique = true)
     @NotEmpty(message = "Поле не может быть пустым")
     @NotBlank(message = "Поле не должно состоять из одних пробелов")
     @Size(min=1, max=50, message = "Размер данного поля должен быть в диапозоне от 1 до 50")
-    private String nick, name;
+    private String username;
+
+
+    @NotEmpty(message = "Поле не может быть пустым")
+    @NotBlank(message = "Поле не должно состоять из одних пробелов")
+    @Size(min=1, max=50, message = "Размер данного поля должен быть в диапозоне от 1 до 50")
+    private String name;
+
 
 
     @PastOrPresent(message = "Выбранная вами дата должна быть либо в настоящем, либо в прошлом")
@@ -44,12 +67,36 @@ public class Profile {
     @Positive(message = "Поле должно быть больше 0")
     private int age;
 
-    public String getNick() {
-        return nick;
+
+
+
+
+
+
+//    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+//    private List<Post> post;
+
+//    @ManyToMany()
+//    @JoinTable(name = "post_profile",
+//            joinColumns = @JoinColumn (name = "profile_id"),
+//            inverseJoinColumns = @JoinColumn (name = "post_id")
+//    )
+//    public List<Post> posts;
+//
+//    public List<Post> getPosts() {
+//        return posts;
+//    }
+
+//    public void setPosts(List<Post> posts) {
+//        this.posts = posts;
+//    }
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {
@@ -93,4 +140,11 @@ public class Profile {
     public void setAge(int age) {
         this.age = age;
     }
+
+
+
+
+
+
+
 }

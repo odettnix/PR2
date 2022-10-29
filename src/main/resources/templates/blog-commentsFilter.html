@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -104,11 +104,33 @@
       display: flex;
       flex-direction: row;
     }
+    .out{
+      border: none;
+      cursor: pointer;
+      background-color: #D6D6D6;
+      color: white;
+      transition: opacity .5s linear;
+    }
+
+    .out:hover{
+      opacity: .7;
+    }
+
+    .form_out{
+      width: 1500px;
+      display: flex;
+      justify-content: flex-end;
+
+    }
+
 
   </style>
 </head>
 <body>
 <div class="page">
+  <form class="form_out" th:action="@{/logout}" method="post">
+    <button class="out" type="submit">Выход</button>
+  </form>
   <header class="header">
     <h1 class="header__title">ПОИСК ОТЗЫВА</h1>
   </header>

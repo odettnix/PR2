@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -83,10 +83,28 @@
       font-size: 13px;
       line-height: 16px;
       color: #FFFFFF;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     .button-class:hover {
       opacity: .8;
+    }
+    .out{
+      border: none;
+      cursor: pointer;
+      background-color: #D6D6D6;
+      color: white;
+      transition: opacity .5s linear;
+    }
+
+    .out:hover{
+      opacity: .7;
+    }
+
+    .form_out{
+      width: 1500px;
+      display: flex;
+      justify-content: flex-end;
+
     }
 
   </style>
@@ -94,6 +112,9 @@
 <body>
 
 <div class="page">
+  <form class="form_out" th:action="@{/logout}" method="post">
+    <button class="out" type="submit">Выход</button>
+  </form>
   <header class="header">
     <h1 class="header__title">ДЕТАЛИ СТАТЬИ</h1>
   </header>
@@ -114,11 +135,18 @@
       <p id="full_text" th:text="${el.full_text}" class="text_box"></p>
     </div>
 
+    <div class="box-flex">
+      <label for="full_text" class="text_box label__text">Автор статьи:</label>
+      <p id="nick" th:text="${el.user.username}" class="text_box"></p>
+    </div>
+
 
 
     <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
       <button type="submit" class="button-class">Удалить</button>
     </form>
+
+
 
     <a class="links link-more" th:href="'/blog/' + ${el.id} + '/edit'">Редактировать &rarr;</a>
 

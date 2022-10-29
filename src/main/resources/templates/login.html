@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+  <title>ВХОД</title>
+  <style>
+    .div-valid{
+
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      width: 350px;
+      letter-spacing: 0.08em;
+      margin: 25px 0 0 0;
+
+      z-index: 3;
+
+      color: #D72A2A;
+    }
+    .div-valid:first-child{
+      margin-top: 0;
+    }
+
+    .links{
+      text-decoration: none;
+      color: black;
+      transition: opacity .5s linear;
+      letter-spacing: 0.08em;
+      align-items: center;
+    }
+    .links:hover{
+      opacity: .5;
+    }
+
+
+
+    .input-field {
+      border: 0;
+      z-index: 1;
+      background-color: transparent;
+      border-bottom: 2px solid #eee;
+      font: inherit;
+      font-size: 1.125rem;
+      padding: .25rem 0;
+      width: 350px;
+      margin-top: 5px;
+    }
+    .action-button {
+      font: inherit;
+      font-size: 1.25rem;
+      margin: 20px 0;
+
+
+      font-weight: 500;
+      background-color: #D6D6D6;
+      border-radius: 6px;
+      color: #FFF;
+      border: 0;
+      width: 188px;
+      height: 49px;
+      transition: background .5s linear;
+      cursor: pointer;
+    }
+    .action-button:hover{
+      background: #8F8F8F;
+    }
+
+    .container{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body{
+      background-color: #D6D6D6;
+      justify-content: center;
+    }
+    /*.page{*/
+    /*  width: 400px;*/
+    /*  height: 250px;*/
+    /*  background-color: white;*/
+    /*  display: flex;*/
+    /*  flex-direction: column;*/
+    /*  justify-content: center;*/
+    /*  align-items: center;*/
+    /*}*/
+    .form_class{
+      max-height: 600px;
+      min-height: 200px;
+      width: 439px;
+      margin: 50px auto 0;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 10px 20px 0 rgba(0, 0, 0, .25);
+    }
+
+    .card{
+      display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-padding{
+      padding: 20px 0 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="form_class">
+  <div class="card card-padding">
+    <div class="div-valid" th:if="${param.error}">
+      Неверный пароль или логин
+    </div>
+    <div class="div-valid" th:if="${param.logout}">
+      Вы вышли из аккаунта
+    </div>
+    <form class="card" th:action="@{/login}" method="post">
+      <input class="input-field" required type="text" name="username" placeholder="логин"/>
+      <input class="input-field" required type="password" name="password" placeholder="пароль"/>
+      <button class="action-button" type="submit"> войти</button>
+    </form>
+    <a class="links" href="/registration">Регистрация</a>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -70,6 +70,11 @@
         <div th:if="${#fields.hasErrors('anons')}" th:errors="*{anons}"></div>
         <textarea class="input-class" th:field="*{full_text}" name="full_text" th:value="*{full_text}" placeholder="Введите текст статьи"></textarea>
         <div th:if="${#fields.hasErrors('full_text')}" th:errors="*{full_text}"></div>
+        <select th:field="*{user}" class="form-control">
+            <div th:each="el : ${profile}">
+                <option th:value="${el.id}" th:text="${el.username}"/>
+            </div>
+        </select>
         <button class="button-class" type="submit">Сохранить изменения</button>
     </form>
 </div>

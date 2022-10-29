@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Создание профилья</title>
@@ -68,13 +68,14 @@
       font-weight: 400;
       font-size: 16px;
       line-height: 19px;
-    }
-    .other-link:first-child{
       margin-right: 26px;
+    }
+    .other-link:last-child{
+      margin-right: 0;
     }
     .content_box{
       width: 405px;
-      height: 300px;
+      height: 210px;
       margin-bottom: 16px;
       background: #D6D6D6;
       border-radius: 20px;
@@ -103,10 +104,28 @@
       margin-top: 10px;
     }
     .link-more{
-      margin-left: 310px;
+      margin-left: 275px;
     }
     .box-margin{
-      margin-bottom: 120px;
+      margin-bottom: 20px;
+    }
+    .out{
+      border: none;
+      cursor: pointer;
+      background-color: #D6D6D6;
+      color: white;
+      transition: opacity .5s linear;
+    }
+
+    .out:hover{
+      opacity: .7;
+    }
+
+    .form_out{
+      width: 1500px;
+      display: flex;
+      justify-content: flex-end;
+
     }
   </style>
 </head>
@@ -114,17 +133,21 @@
 <body>
 
 <div class="page">
+  <form class="form_out" th:action="@{/logout}" method="post">
+    <button class="out" type="submit">Выход</button>
+  </form>
   <header class="header">
     <div class="header__profile">
       <h1 class="header__title">ПРОФИЛЬ</h1>
       <div class="profiles">
-        <a class="links main-link" href="/blog/ProfileAdd">Добавить профиль</a>
-        <a class="links" href="/blog/filerProfile">Поиск профилей</a>
+<!--        <a class="links main-link" href="/blog/ProfileAdd">Добавить профиль</a>-->
+        <a class="links main-link" href="/blog/filerProfile">Поиск профилей</a>
 
       </div>
     </div>
     <div class="header__nav-links">
       <a class="links other-link" href="/">Статьи</a>
+      <a class="links other-link" href="/blog/MoreInfo">Больше информации</a>
       <a class="links other-link" href="/blog/comments">Отзывы</a>
     </div>
   </header>
@@ -134,8 +157,8 @@
   <div  th:each="el : ${profiles}">
     <div class="content_box">
       <div class="box-flex">
-        <label for="nick" class="text_box label__text">Никнейм:</label>
-        <p id='nick' th:text="${el.nick}" class="text_box"></p>
+        <label for="username" class="text_box label__text">Никнейм:</label>
+        <p id='username' th:text="${el.username}" class="text_box"></p>
       </div>
       <div class="box-flex">
         <label for="name" class="text_box label__text" >Имя:</label>
@@ -156,11 +179,15 @@
         <label for="age" class="text_box label__text">Возраст:</label>
         <p id='age' th:text="${el.age}" class="text_box"></p>
       </div>
+<!--      <a class="links infolink" th:if="${el.moreinfo == null}" th:href="'/contacts/add/' + ${el.id}">Дополнить информацию &rarr;</a>-->
+      <a class="links link-more" th:href="'/blog/Profile/' + ${el.id} + '/edit'">Рекдактировать &rarr;</a>
 
 
 
 
-      <a class="links link-more" th:href="'/blog/Profile/' + ${el.id}">Подробнее &rarr;</a>
+
+
+<!--      <a class="links link-more" th:href="'/blog/Profile/' + ${el.id}">Подробнее &rarr;</a>-->
     </div>
 
   </div>

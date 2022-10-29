@@ -1,29 +1,28 @@
 package com.example.demo.controllers;
 
 //import com.example.demo.models.Comments;
-import com.example.demo.models.Commentari;
-import com.example.demo.models.Profile;
+import com.example.demo.models.*;
 //import com.example.demo.repo.CommentsRepository;
-import com.example.demo.repo.CommentariRepository;
-import com.example.demo.repo.ProfileRepository;
+import com.example.demo.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.demo.repo.PostRepository;
-import com.example.demo.models.Post;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 @Controller
 public class BlogController  {
     @Autowired
@@ -32,6 +31,9 @@ public class BlogController  {
     private ProfileRepository profileRepository;
     @Autowired
     private CommentariRepository commentariRepository;
+
+    @Autowired
+    private UserRepository userRepository;
     @GetMapping("/")
     public String blogMain(Model model)
     {
@@ -43,30 +45,90 @@ public class BlogController  {
    @GetMapping("/blog/add")
     public String blogAdd(Post post, Model model)
     {
+        Iterable<User> users = userRepository.findAll();
+        model.addAttribute("profile", users);
+
         return "blog-add";
     }
 
+    public String crntUsNm()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return currentUserName;
+        }
 
+        return null;
+    }
 
-//    @PostMapping("/blog/add")
-//    public String blogPostAdd(@RequestParam String title,
-//                              @RequestParam String anons,
-//                              @RequestParam String full_text, Model model)
-//    {
-//        Post post = new Post(title, anons, full_text);
-//        postRepository.save(post);
-//        return "redirect:/";
-//    }
 
     @PostMapping("/blog/add")
-    public String blogPostAdd(@ModelAttribute ("post") @Valid Post post, BindingResult bindingResult)
+    public String blogPostAdd(@ModelAttribute ("post") @Valid Post postValid, BindingResult bindingResult, Model model)
     {
         if(bindingResult.hasErrors()){
+            Iterable<User> users = userRepository.findAll();
+            model.addAttribute("profile", users);
             return "blog-add";
         }
+        Post post = new Post(postValid.getTitle(), postValid.getAnons(), postValid.getFull_text(), postValid.getUser());
         postRepository.save(post);
         return "redirect:/";
     }
+
+    ///
+    @Autowired
+    private MoreInfoRepository moreInfoRepository;
+    @GetMapping("/blog/MoreInfo")
+    public String blogMoreInfo(Model model)
+    {
+        Iterable<MoreInfo> moreInfos = moreInfoRepository.findAll();
+        model.addAttribute("moreinfo", moreInfos);
+        return "blog-moreinfo";
+    }
+
+    @GetMapping("/blog/MoreInfoadd")
+    public String blogMoreInfoAdd(MoreInfo moreInfo, Model model)
+    {
+        Iterable<User> user = userRepository.findAll();
+        model.addAttribute("user", user);
+
+        return "blog-moreinfo-add";
+    }
+
+
+    @PostMapping("/blog/MoreInfoadd")
+    public String blogMoreInfoAdd(@ModelAttribute ("moreInfo") @Valid MoreInfo moreInfoValid, BindingResult bindingResult, Model model)
+    {
+        Boolean haveErrors = false;
+
+        if(moreInfoRepository.findByEmail(moreInfoValid.getEmail()) != null && !moreInfoRepository.findByEmail(moreInfoValid.getEmail()).getId().equals(moreInfoValid.getId())){
+            model.addAttribute("email_error", "Данный email уже существует");
+            haveErrors = true;
+        }
+
+        if(moreInfoRepository.findByPhone(moreInfoValid.getPhone()) != null && !moreInfoRepository.findByPhone(moreInfoValid.getPhone()).getId().equals(moreInfoValid.getId())){
+            model.addAttribute("phone_error", "Данный телефон уже существует");
+            haveErrors = true;
+        }
+
+
+        if(moreInfoRepository.findByUser(moreInfoValid.getUser()) != null && !moreInfoRepository.findByUser(moreInfoValid.getUser()).getId().equals(moreInfoValid.getId())){
+            model.addAttribute("user_error", "У данного пользователя уже есть контакты");
+            haveErrors = true;
+        }
+
+
+        if(bindingResult.hasErrors() || haveErrors){
+            Iterable<User> users = userRepository.findAll();
+            model.addAttribute("user", users);
+            return "blog-moreinfo-add";
+        }
+        MoreInfo moreInfos = new MoreInfo(moreInfoValid.getEmail(), moreInfoValid.getPhone(), moreInfoValid.getUser());
+        moreInfoRepository.save(moreInfos);
+        return "redirect:/";
+    }
+
 
     @GetMapping("/blog/filter")
     public String blogFilter(Model model)
@@ -99,18 +161,22 @@ public class BlogController  {
     //////////////////////
 
 
+
     @GetMapping("/blog/profile")
     public String blogProfile(Model model)
     {
+        User user = userRepository.findByUsername(crntUsNm());
 
-        Iterable<Profile> profiles = profileRepository.findAll();
-        model.addAttribute("profiles", profiles);
+//        Iterable<Profile> profiles = profileRepository.findAll();
+        model.addAttribute("profiles", user);
         return "blog-profile";
     }
+
 
     @GetMapping("/blog/ProfileAdd")
     public String blogProfileAdd(Profile profile, Model model)
     {
+
 
         return "blog-profileAdd";
     }
@@ -135,7 +201,10 @@ public class BlogController  {
         if(bindingResult.hasErrors()){
             return "blog-profileAdd";
         }
+
+
         profileRepository.save(profile);
+//        profileRepository.save(profile);
         return "redirect:/";
 
     }
@@ -167,6 +236,42 @@ public class BlogController  {
         return "redirect:/";
     }
 
+    ////////////////////////////
+    @GetMapping("/blog/Cardadd")
+    public String blogCardAdd(Model model)
+    {
+        Iterable<User> students = userRepository.findAll();
+        model.addAttribute("profile", students);
+        Iterable<Post> universities = postRepository.findAll();
+        model.addAttribute("post", universities);
+        return "blog-editCard";
+    }
+
+    @GetMapping("/blog/Card")
+    public String CardShow(Model model) {
+        Iterable<User> users = userRepository.findAll();
+        model.addAttribute("profile", users);
+        Iterable<Post> posts = postRepository.findAll();
+        model.addAttribute("posts", posts);
+        model.addAttribute("profile", users);
+        return "blog-card";
+    }
+
+    @PostMapping("/blog/Carddd")
+    public String blogCardAdd(@RequestParam long user_id, @RequestParam long post_id, Model model)
+    {
+        User user1 = userRepository.findById(user_id).get();
+        Post post1 = postRepository.findById(post_id).get();
+
+        post1.getUsers().add(user1);
+
+        postRepository.save(post1);
+
+        return "redirect:/";
+    }
+
+
+
     //////////////////////////
     @GetMapping("/blog/filerProfile")
     public String blogFilterProfile(Model model)
@@ -175,9 +280,9 @@ public class BlogController  {
     }
 
     @PostMapping("/blog/filter/profile")
-    public String blogResultProfile(@RequestParam String nick, Model model)
+    public String blogResultProfile(@RequestParam String username, Model model)
     {
-        List<Profile> results = profileRepository.findByNickContains(nick);
+        List<Profile> results = profileRepository.findByUsernameContains(username);
         model.addAttribute("results", results);
 //        List<Post> result = postRepository.findByTitleContains(title);
 //        model.addAttribute("result", result);
@@ -185,9 +290,9 @@ public class BlogController  {
     }
 
     @PostMapping("/blog/filter/profiles")
-    public String blogResultsProfiles(@RequestParam String nick, Model model)
+    public String blogResultsProfiles(@RequestParam String username, Model model)
     {
-        List<Profile> results = profileRepository.findByNick(nick);
+        List<Profile> results = profileRepository.findByUsername(username);
         model.addAttribute("results", results);
 //        List<Post> result = postRepository.findByTitleContains(title);
 //        model.addAttribute("result", result);
@@ -233,12 +338,36 @@ public class BlogController  {
         return "blog-details";
     }
 
+    //    @GetMapping("/blog/MoreInfoadd")
+//    public String blogMoreInfoAdd(MoreInfo moreInfo, Model model)
+//    {
+//        Iterable<Profile> profiles = profileRepository.findAll();
+//        model.addAttribute("profile", profiles);
+//
+//        return "blog-moreinfo-add";
+//    }
+
+//    @PostMapping("/blog/MoreInfoadd")
+//    public String blogMoreInfoAdd(@ModelAttribute ("moreInfo") @Valid MoreInfo moreInfoValid, BindingResult bindingResult, Model model)
+//    {
+//        if(bindingResult.hasErrors()){
+//            Iterable<Profile> profiles = profileRepository.findAll();
+//            model.addAttribute("profile", profiles);
+//            return "blog-moreinfo-add";
+//        }
+//        MoreInfo moreInfos = new MoreInfo(moreInfoValid.getEmail(), moreInfoValid.getPhone(), moreInfoValid.getHomephone(), moreInfoValid.getProfile());
+//        moreInfoRepository.save(moreInfos);
+//        return "redirect:/";
+//    }
+
     @GetMapping("/blog/{id}/edit")
     public String blogEdit(@PathVariable(value = "id") long id, Post posts, Model model)
     {
         if(!postRepository.existsById(id)){
             return "redirect:/blog";
         }
+        Iterable<User> users = userRepository.findAll();
+        model.addAttribute("profile", users);
         Optional<Post> post = postRepository.findById(id);
 /*        ArrayList<Post> res = new ArrayList<>();
         post.ifPresent(res::add);*/
@@ -252,6 +381,8 @@ public class BlogController  {
                                  Model model)
     {
         if(bindingResult.hasErrors()){
+            Iterable<User> users = userRepository.findAll();
+            model.addAttribute("profile", users);
             return "blog-edit";
         }
         postRepository.save(posts);
@@ -264,6 +395,136 @@ public class BlogController  {
     {
         Post post = postRepository.findById(id).orElseThrow();
         postRepository.delete(post);
+        return "redirect:/";
+    }
+
+    ///////////
+    @GetMapping("/blog/Card/{profile_id}/{post_id}")
+    public String blogBlogCardDelete(@PathVariable Long post_id, @PathVariable Long profile_id,
+                                 Model model)
+    {
+        User user = userRepository.findById(profile_id).orElseThrow();
+        Post post = postRepository.findById(post_id).orElseThrow();
+        user.getPosts().remove(post);
+        userRepository.save(user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/blog/Card/{user_id}/{post_id}/edit")
+    public String blogEditCard(@PathVariable long user_id, Model model)
+    {
+        if(!userRepository.existsById(user_id)){
+            return "redirect:/blog";
+        }
+
+
+        Iterable<User> users = userRepository.findAll();
+        model.addAttribute("user", users);
+        Iterable<Post> post = postRepository.findAll();
+        model.addAttribute("post", post);
+        Optional<User> profile1 = userRepository.findById(user_id);
+/*        ArrayList<Post> res = new ArrayList<>();
+        post.ifPresent(res::add);*/
+        model.addAttribute("user", profile1.get());
+
+        return "card-edit";
+    }
+
+    @PostMapping("/blog/Card/{user_id}/{post_id}/edit")
+    public String blogPostUpdateCard(@RequestParam long user_id, @RequestParam long post_id, Model model)
+    {
+        User user1 = userRepository.findById(user_id).orElseThrow();
+        Post posts1 = postRepository.findById(post_id).orElseThrow();
+        user1.getPosts().remove(posts1);
+        userRepository.save(user1);
+
+        User user2 = userRepository.findById(user_id).get();
+        Post post1 = postRepository.findById(post_id).get();
+
+        post1.getUsers().add(user1);
+
+        postRepository.save(post1);
+
+//        user1.getPosts().add(posts1);
+//        postRepository.save(posts1);
+        return "redirect:/";
+    }
+
+
+    ////////////////////////////////////
+
+    @GetMapping("/blog/MoreInfo/{id}")
+    public String blogMoreInfoDetails(@PathVariable(value = "id") long id, Model model)
+    {
+        Optional<MoreInfo> moreInfo = moreInfoRepository.findById(id);
+        ArrayList<MoreInfo> res = new ArrayList<>();
+        moreInfo.ifPresent(res::add);
+        model.addAttribute("moreinfo", res);
+        if(!moreInfoRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        return "blog-detailsMoreInfo";
+    }
+
+//    @GetMapping("/blog/MoreInfoadd")
+//    public String blogMoreInfoAdd(MoreInfo moreInfo, Model model)
+//    {
+//        Iterable<Profile> profiles = profileRepository.findAll();
+//        model.addAttribute("profile", profiles);
+//
+//        return "blog-moreinfo-add";
+//    }
+
+//    @PostMapping("/blog/MoreInfoadd")
+//    public String blogMoreInfoAdd(@ModelAttribute ("moreInfo") @Valid MoreInfo moreInfoValid, BindingResult bindingResult, Model model)
+//    {
+//        if(bindingResult.hasErrors()){
+//            Iterable<Profile> profiles = profileRepository.findAll();
+//            model.addAttribute("profile", profiles);
+//            return "blog-moreinfo-add";
+//        }
+//        MoreInfo moreInfos = new MoreInfo(moreInfoValid.getEmail(), moreInfoValid.getPhone(), moreInfoValid.getHomephone(), moreInfoValid.getProfile());
+//        moreInfoRepository.save(moreInfos);
+//        return "redirect:/";
+//    }
+
+    @GetMapping("/blog/MoreInfo/{id}/edit")
+    public String blogMoreInfoEdit(@PathVariable(value = "id") long id, MoreInfo moreInfo, Model model)
+    {
+        if(!moreInfoRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        Iterable<Profile> profiles = profileRepository.findAll();
+        model.addAttribute("profile", profiles);
+        Optional<MoreInfo> moreInfos = moreInfoRepository.findById(id);
+/*        ArrayList<Post> res = new ArrayList<>();
+        post.ifPresent(res::add);*/
+        model.addAttribute("moreInfo", moreInfos.get());
+
+        return "blog-editMoreInfo";
+    }
+
+    @PostMapping("/blog/MoreInfo/{id}/edit")
+    public String blogMoreInfoUpdate(@ModelAttribute ("moreinfo") @Valid MoreInfo moreInfoValid, BindingResult bindingResult,
+                                 Model model)
+    {
+        if(bindingResult.hasErrors()){
+            Iterable<Profile> profiles = profileRepository.findAll();
+            model.addAttribute("profile", profiles);
+            return "blog-editMoreInfo";
+        }
+        moreInfoRepository.save(moreInfoValid);
+        return "redirect:/";
+    }
+
+
+
+    @PostMapping("/blog/MoreInfo/{id}/remove")
+    public String blogBlogDeleteMoreInfo(@PathVariable(value = "id") long id,
+                                        Model model)
+    {
+        MoreInfo moreInfo = moreInfoRepository.findById(id).orElseThrow();
+        moreInfoRepository.delete(moreInfo);
         return "redirect:/";
     }
 
@@ -282,46 +543,27 @@ public class BlogController  {
     }
 
     @GetMapping("/blog/Profile/{id}/edit")
-    public String blogEditProfile(@PathVariable(value = "id") long id, Profile profiles, Model model)
+    public String blogEditProfile(@PathVariable(value = "id") long id, User users, Model model)
     {
-        if(!profileRepository.existsById(id)){
-            return "redirect:/blog";
+        if(!userRepository.existsById(id)){
+            return "redirect:/";
         }
-        Optional<Profile> profile = profileRepository.findById(id);
-//        ArrayList<Profile> res = new ArrayList<>();
-//        profile.ifPresent(res::add);
-        model.addAttribute("profile", profile.get());
+        Optional<User> user = userRepository.findById(id);
+        model.addAttribute("user", user.get());
 
         return "blog-editProfile";
     }
 
-//    @PostMapping("/blog/Profile/{id}/edit")
-//    public String blogPostUpdateProfile(@PathVariable(value = "id") long id,
-//                                        @RequestParam String nick,
-//                                        @RequestParam String name,
-//                                        @RequestParam Date data_reg,
-//                                        @RequestParam char gender,
-//                                        @RequestParam int age,
-//                                        Model model)
-//    {
-//        Profile profile = profileRepository.findById(id).orElseThrow();
-//        profile.setNick(nick);
-//        profile.setName(name);
-//        profile.setData_reg(data_reg);
-//        profile.setGender(gender);
-//        profile.setAge(age);
-//        profileRepository.save(profile);
-//        return "redirect:/";
-//    }
 
     @PostMapping("/blog/Profile/{id}/edit")
-    public String blogPostUpdateProfile(@ModelAttribute ("profile") @Valid Profile profile, BindingResult bindingResult)
+    public String blogPostUpdateProfile(@ModelAttribute ("user") @Valid User user, BindingResult bindingResult)
     {
 
         if(bindingResult.hasErrors()){
             return "blog-editProfile";
         }
-        profileRepository.save(profile);
+        user.setRoles(Collections.singleton(Role.USER));
+        userRepository.save(user);
         return "redirect:/";
     }
 

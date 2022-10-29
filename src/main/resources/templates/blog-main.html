@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -69,16 +69,18 @@
             font-weight: 400;
             font-size: 16px;
             line-height: 19px;
-        }
-        .other-link:first-child{
             margin-right: 26px;
         }
+        /*.other-link:first-child{*/
+        /*    margin-right: 26px;*/
+        /*}*/
         .content_box{
             width: 829px;
             height: 184px;
             margin: 0 auto 16px;
             background: #D6D6D6;
-            border-radius: 20px;
+            border-radius: 5px;
+
             padding: 24px 34px 0;
 
 
@@ -98,29 +100,67 @@
         }
 
         .box-margin{
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
         .link-more{
             margin-left: 730px;
+        }
+
+
+        /*body::-webkit-scrollbar {*/
+        /*    width: 12px;               !* ширина scrollbar *!*/
+        /*}*/
+        /*body::-webkit-scrollbar-track {*/
+        /*    background: #D6D6D6;        !* цвет дорожки *!*/
+        /*}*/
+        /*body::-webkit-scrollbar-thumb {*/
+        /*    background-color: white;    !* цвет плашки *!*/
+        /*    border-radius: 20px;       !* закругления плашки *!*/
+        /*    border: 3px solid orange;  !* padding вокруг плашки *!*/
+        /*}*/
+
+        .out{
+            border: none;
+            cursor: pointer;
+            background-color: #D6D6D6;
+            color: white;
+            transition: opacity .5s linear;
+        }
+
+        .out:hover{
+            opacity: .7;
+        }
+
+        .form_out{
+            width: 1500px;
+            display: flex;
+            justify-content: flex-end;
+
         }
 
     </style>
 </head>
 <body>
 <div class="page">
+    <form class="form_out" th:action="@{/logout}" method="post">
+        <button class="out" type="submit">Выход</button>
+    </form>
     <header class="header">
         <div class="header__post">
             <h1 class="header__title">СТАТЬИ</h1>
-            <div class="posts">
-                <a class="links main-link" href="/blog/add">Добавить статью</a>
-                <a class="links" href="/blog/filter">Поиск статей</a>
+            <div class="posts" >
+                <a class="links main-link" href="/blog/add" sec:authorize="hasAuthority('USER')">Добавить статью</a>
+                <a class="links" href="/blog/filter" sec:authorize="hasAuthority('USER')">Поиск статей</a>
             </div>
 
         </div>
 
         <div class="header__nav-links">
-            <a class="links other-link" href="/blog/profile">Профили</a>
-            <a class="links " href="/blog/comments">Отзывы</a>
+            <a class="links other-link" href="/blog/profile" sec:authorize="hasAuthority('USER')">Профиль</a>
+            <a class="links other-link" href="/blog/Card">Карточка</a>
+            <a class="links other-link" href="/blog/comments">Отзывы</a>
+
+            <a class="links" href="/admin" sec:authorize="hasAuthority('ADMIN')">админ</a>
         </div>
 
 
@@ -139,9 +179,14 @@
                     <p class="text_box" id="anons" th:text="${el.anons}" ></p>
                 </div>
 
-                <div class="box-flex box-margin">
+                <div class="box-flex">
                     <label class="text_box label__text" for="anons" >Текст статьи:</label>
                     <p class="text_box" id="full_text" th:text="${el.full_text}" ></p>
+                </div>
+
+                <div class="box-flex box-margin">
+                    <label class="text_box label__text" for="username" >Автор статьи:</label>
+                    <p class="text_box" id="username" th:text="${el.user.username}"></p>
                 </div>
 
                 <a class="links link-more" th:href="'/blog/' + ${el.id}">Подробнее &rarr;</a>
